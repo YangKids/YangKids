@@ -33,7 +33,7 @@ public class CommentRestController {
 	public ResponseEntity<?> list(int articleId){
 		List<Comment> list = commentService.getCommentList(articleId);
 		
-		//가져올 게시글 없으면
+		//가져올 댓글 없으면
 		if(list==null || list.size()==0) {
 			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 		}
@@ -48,7 +48,7 @@ public class CommentRestController {
 		try {
 			int result = commentService.writeComment(comment);
 			
-			//리뷰 등록에 실패했으면 예외발생
+			//댓글 등록에 실패했으면 예외발생
 			if(result==0) throw new Exception();
 			
 			return new ResponseEntity<Comment>(comment, HttpStatus.CREATED);
@@ -64,7 +64,7 @@ public class CommentRestController {
 		try {
 			int result = commentService.modifyComment(comment);
 			
-			//리뷰 수정에 실패했으면 예외발생
+			//댓글 수정에 실패했으면 예외발생
 			if(result==0) throw new Exception();
 			
 			return new ResponseEntity<Void>(HttpStatus.OK);
@@ -80,7 +80,7 @@ public class CommentRestController {
 		try {
 			int result = commentService.removeComment(commentId);
 			
-			//리뷰 삭제에 실패했으면 예외발생
+			//댓글 삭제에 실패했으면 예외발생
 			if(result==0) throw new Exception();
 			
 			return new ResponseEntity<Void>(HttpStatus.OK);
