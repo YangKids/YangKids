@@ -23,14 +23,14 @@ import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping("/api")
-@Api(tags = "게시판 컨트롤러")
+@Api(tags = "article 컨트롤러")
 //@CrossOrigin("*")
 public class ArticleRestController {
 
 	@Autowired
 	private ArticleService articleService;
 
-	// 1. 목록 가져오기
+	// 1. 게시글 목록
 	@ApiOperation(value = "게시글 조회", notes = "검색 조건도 넣으면 같이 가져옴")
 	@GetMapping("/article")
 	public ResponseEntity<?> list(SearchCondition condition) {
@@ -41,28 +41,28 @@ public class ArticleRestController {
 		return new ResponseEntity<List<Article>>(list, HttpStatus.OK);
 	}
 
-	// 2. 상세보기
-	@GetMapping("/article/{id}")
-	public ResponseEntity<Article> detail(@PathVariable int id) {
-		Article article = articleService.readArticle(id);
+	// 2. 게시글 상세보기
+	@GetMapping("/article/{articleId}")
+	public ResponseEntity<Article> detail(@PathVariable int articleId) {
+		Article article = articleService.readArticle(articleId);
 		return new ResponseEntity<Article>(article, HttpStatus.OK);
 	}
 
-	// 3. 등록
+	// 3. 게시글 등록
 	@PostMapping("/article")
 	public ResponseEntity<Article> write(Article article) {
 		articleService.writeArticle(article);
 		return new ResponseEntity<Article>(article, HttpStatus.CREATED);
 	}
 
-	// 4. 삭제
+	// 4. 게시글 삭제
 	@DeleteMapping("/article/{id}")
-	public ResponseEntity<Void> delete(@PathVariable int id) {
-		articleService.removeArticle(id);
+	public ResponseEntity<Void> delete(@PathVariable int articleId) {
+		articleService.removeArticle(articleId);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 
-	// 5. 수정
+	// 5. 게시글 수정
 	@PutMapping("/article")
 	public ResponseEntity<Void> update(@RequestBody Article article) {
 		articleService.modifyArticle(article);

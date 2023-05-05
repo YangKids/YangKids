@@ -15,21 +15,15 @@ public class ArticleServiceImpl implements ArticleService {
 
 	private ArticleDao articleDao;
 
-	// Dao 인스턴스를 주입 해준다. (서7유지나)
 	@Autowired
 	public void setBoardDao(ArticleDao articleDao) {
 		this.articleDao = articleDao;
 	}
 
 	@Override
-	public List<Article> getArticleList() {
-		return articleDao.selectAll();
-	}
-
-	@Override
-	public Article readArticle(int id) {
-		articleDao.updateViewCnt(id);
-		return articleDao.selectOne(id);
+	public Article readArticle(int articleId) {
+		articleDao.updateViewCnt(articleId);
+		return articleDao.selectOne(articleId);
 	}
 
 	@Transactional
@@ -40,8 +34,8 @@ public class ArticleServiceImpl implements ArticleService {
 
 	@Transactional
 	@Override
-	public void removeArticle(int id) {
-		articleDao.deleteArticle(id);
+	public void removeArticle(int articleId) {
+		articleDao.deleteArticle(articleId);
 	}
 
 	@Transactional
