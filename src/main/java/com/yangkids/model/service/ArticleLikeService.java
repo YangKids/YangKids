@@ -6,7 +6,7 @@ import com.yangkids.model.dto.ArticleLike;
 
 @Service
 public interface ArticleLikeService {
-	public int selectLike(ArticleLike articleLike);
-	public void insert(ArticleLike articleLike);
-	public void delete(ArticleLike articleLike);
+	public int countLike(ArticleLike articleLike);
+	public int insertLike(ArticleLike articleLike);
+	public int deleteLike(ArticleLike articleLike);
 }

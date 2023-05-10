@@ -24,7 +24,4 @@ public interface ArticleDao {
 	
 	// 검색기능
 	public List<Article> search(SearchCondition condition);
-	
-	// 좋아요 개수
-	public void updateLikeCnt(int articleId);
 }

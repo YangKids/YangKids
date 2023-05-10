@@ -22,8 +22,6 @@ public class ArticleServiceImpl implements ArticleService {
 
 	@Override
 	public Article readArticle(int articleId) {
-		// 좋아요 추가
-		articleDao.updateLikeCnt(articleId);
 		articleDao.updateViewCnt(articleId);
 		return articleDao.selectOne(articleId);
 	}

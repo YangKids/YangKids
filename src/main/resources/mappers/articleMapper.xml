@@ -49,11 +49,14 @@
 		</if>
 	</select>
 	
-	<!-- 좋아요 수 총개수  -->
-	<update id="updateLikeCnt" parameterType="int">
+	
+	<!-- 좋아요 기능이 사라졌을때 얘는 article에 있을 필요가 없으니까 여기 있지 않아도 되징  --> 
+	<!-- <update id="updateLikeCnt" parameterType="int">
 		UPDATE Article
 		SET
-		likeCnt = (SELECT COUNT(*) FROM ArticleLike WHERE articleId=#{articleId})
+		숫자 증가 혹은 감
+		likeCnt = likeCnt + ${delta}
 		WHERE articleId = #{articleId}
-	</update>
+	</update> -->
+	
 </mapper>
