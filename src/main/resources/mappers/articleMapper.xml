@@ -5,26 +5,25 @@
  <mapper namespace="com.yangkids.model.dao.ArticleDao">
 
 	<!-- 전체글 조회 -->
-	<select id="selectAll" resultType="Article">
-		SELECT * FROM Article;
+	<select id="selectAll" parameterType="int" resultType="Article">
+		SELECT * FROM Article WHERE boardId=#{boardId} AND deletedAt IS NULL;
 	</select>
 
 	<!-- 상세글 조회 -->
 	<select id="selectOne" parameterType="int" resultType="Article">
-		SELECT * FROM Article WHERE articleId = #{articleId};
+		SELECT * FROM Article WHERE articleId = #{articleId} AND deletedAt IS NULL
 	</select>
 
 	<!-- 게시글 등록 -->
-	<insert id="insertArticle" parameterType="Article"
-		keyProperty="id" useGeneratedKeys="true">
+	<insert id="insertArticle" parameterType="Article" keyProperty="articleId" useGeneratedKeys="true">
 		INSERT INTO Article(boardId, articleId, title, writerId, content)
 		VALUES (#{boardId}, #{articleId}, #{title}, #{writerId}, #{content})
 	</insert>
 
 	<!-- 게시글 삭제 -->
-	<delete id="deleteArticle" parameterType="int">
-		DELETE FROM Article WHERE articleId= #{articleId}
-	</delete>
+	<update id="deleteArticle" parameterType="int">
+		UPDATE Article SET deletedAt=now() WHERE articleId = #{articleId}
+	</update>
 
 	<!-- 조회수 증가 -->
 	<update id="updateViewCnt" parameterType="int">
@@ -33,7 +32,7 @@
 
 	<!-- 게시글 수정 -->
 	<update id="updateArticle" parameterType="Article">
-		UPDATE Article SET title=#{title}, content=#{content}, regDate = now()
+		UPDATE Article SET title=#{title}, content=#{content}, updateDate = now()
 		WHERE articleId=#{articleId}
 	</update>
 

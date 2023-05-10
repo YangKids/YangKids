@@ -6,8 +6,11 @@ import com.yangkids.model.dto.Article;
 import com.yangkids.model.dto.SearchCondition;
 
 public interface ArticleDao {
+	
+	// 게시글 목록
+	public List<Article> selectAll(int boardId);
 
-	// articleId에 맞는 게시글 가져오기
+	// 게시글 상세
 	public Article selectOne(int articleId);
 
 	// 게시글 등록
@@ -24,4 +27,5 @@ public interface ArticleDao {
 	
 	// 검색기능
 	public List<Article> search(SearchCondition condition);
+
 }
