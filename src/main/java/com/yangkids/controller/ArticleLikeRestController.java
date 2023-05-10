@@ -16,7 +16,7 @@ import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping("/api-like")
-@Api(tags="Like 컨트롤러")
+@Api(tags="ArticleLike 컨트롤러")
 public class ArticleLikeRestController {
 	
 	@Autowired
