@@ -4,17 +4,17 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yangkids.model.dao.ArticleLikeDao">
 
-	<select id="select" resultType="int">
-		<!-- 눌렀냐 안눌렀냐? -->
+	<select id="select" resultType="int" parameterType="ArticleLike">
+		<!-- 좋아요 눌렀는지 안눌렀는지 check -->
 		select count(*) from ArticleLike where articleId = #{articleId} and userId = #{userId}
 	</select>
 	
-	<insert id="insert">
+	<insert id="insert" parameterType="ArticleLike">
 		insert into ArticleLike(articleId, userId)
 		values(#{articleId}, #{userId})
 	</insert>
 	
-	<delete id="delete">
+	<delete id="delete" parameterType="ArticleLike">
 	  	delete from ArticleLike where articleId = #{articleId} and userId = #{userId}; 
 	</delete>
 	
@@ -22,7 +22,7 @@
 	<update id="updateLikeCnt" parameterType="int">
 		UPDATE Article
 		SET
-		<!-- 숫자 증가 혹은 감소 -->
+		<!-- 좋아요 총개수 update -->
 		likeCnt = likeCnt + ${delta}
 		WHERE articleId = #{articleId}
 	</update>
