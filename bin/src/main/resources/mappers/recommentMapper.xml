@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yangkids.model.dao.RecommentDao">
+
+	<!-- 대댓글 목록 조회 -->
+	<select id="selectAll" parameterType="int" resultType="Recomment">
+		SELECT * FROM Recomment WHERE commentId=${commentId};
+	</select>
+
+	<!-- 대댓글 등록 -->
+	<insert id="insertRecomment" parameterType="Recomment">
+		INSERT INTO Recomment(commentId, content, writerId)
+		VALUES
+		(#{commentId}, #{content}, #{writerId})
+	</insert>
+
+	<!-- 대댓글 삭제 -->
+	<delete id="deleteRecomment" parameterType="int">
+		DELETE FROM Recomment
+		WHERE recommentId = #{recommentId}
+	</delete>
+
+	<!-- 대댓글 수정 -->
+	<update id="updateRecomment" parameterType="Recomment">
+		UPDATE Recomment SET content=#{content}, isModified=1
+		WHERE recommentId=#{recommentId}
+	</update>
+
+</mapper>
