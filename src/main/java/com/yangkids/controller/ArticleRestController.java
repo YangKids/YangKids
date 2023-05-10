@@ -22,7 +22,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api-article")
 @Api(tags = "Article 컨트롤러")
 //@CrossOrigin("*")
 public class ArticleRestController {
@@ -30,43 +30,51 @@ public class ArticleRestController {
 	@Autowired
 	private ArticleService articleService;
 
-	// 1. 게시글 목록
-	@ApiOperation(value = "게시글 조회", notes = "검색 조건도 넣으면 같이 가져옴")
-	@GetMapping("/article")
-	public ResponseEntity<?> list(SearchCondition condition) {
-		List<Article> list = articleService.search(condition);
-
+	@ApiOperation(value = "게시글 목록")
+	@GetMapping("/board/{boardId}")
+	public ResponseEntity<?> board(@PathVariable int boardId){
+		List<Article> list = articleService.getBoardList(boardId);
 		if (list == null || list.size() == 0)
 			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 		return new ResponseEntity<List<Article>>(list, HttpStatus.OK);
 	}
 
-	// 2. 게시글 상세보기
-	@GetMapping("/article/{articleId}")
+	@ApiOperation(value = "게시글 상세")
+	@GetMapping("/detail/{articleId}")
 	public ResponseEntity<Article> detail(@PathVariable int articleId) {
 		Article article = articleService.readArticle(articleId);
 		return new ResponseEntity<Article>(article, HttpStatus.OK);
 	}
 
-	// 3. 게시글 등록
-	@PostMapping("/article")
+	@ApiOperation(value = "게시글 등록")
+	@PostMapping("/write")
 	public ResponseEntity<Article> write(Article article) {
 		articleService.writeArticle(article);
 		return new ResponseEntity<Article>(article, HttpStatus.CREATED);
 	}
 
-	// 4. 게시글 삭제
-	@DeleteMapping("/article/{articleId}")
+	@ApiOperation(value = "게시글 삭제")
+	@DeleteMapping("/delete/{articleId}")
 	public ResponseEntity<Void> delete(@PathVariable int articleId) {
 		articleService.removeArticle(articleId);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 
-	// 5. 게시글 수정
-	@PutMapping("/article")
+	@ApiOperation(value = "게시글 수정")
+	@PutMapping("/update")
 	public ResponseEntity<Void> update(@RequestBody Article article) {
 		articleService.modifyArticle(article);
 		return new ResponseEntity<Void>(HttpStatus.OK);
+	}
+	
+	@ApiOperation(value = "게시글 검색", notes = "key: 검색 조건, word: 검색어")
+	@GetMapping("/search")
+	public ResponseEntity<?> search(SearchCondition condition) {
+		List<Article> list = articleService.search(condition);
+
+		if (list == null || list.size() == 0)
+			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+		return new ResponseEntity<List<Article>>(list, HttpStatus.OK);
 	}
 
 }

@@ -16,10 +16,15 @@ public class ArticleServiceImpl implements ArticleService {
 	private ArticleDao articleDao;
 
 	@Autowired
-	public void setBoardDao(ArticleDao articleDao) {
+	public void setArticleDao(ArticleDao articleDao) {
 		this.articleDao = articleDao;
 	}
 
+	@Override
+	public List<Article> getBoardList(int boardId) {
+		return articleDao.selectAll(boardId);
+	}
+	
 	@Override
 	public Article readArticle(int articleId) {
 		articleDao.updateViewCnt(articleId);
@@ -49,4 +54,5 @@ public class ArticleServiceImpl implements ArticleService {
 //		articleDao.updateLikeCnt(articleId);
 		return articleDao.search(condition);
 	}
+
 }
