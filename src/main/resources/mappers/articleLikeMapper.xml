@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yangkids.model.dao.ArticleLikeDao">
+
+	<select id="findLike" resultType="int">
+		select count(*) from ArticleLike where articleId = #{articleId} and userId = #{userId}
+	</select>
+	
+	<insert id="likeup">
+		insert into ArticleLike(articleId, userId)
+		values(#{articleId}, #{userId})
+		<!--values((select * from (select max(like_no)+1 from vegan_like) next), #{board_no},#{user_no},1)-->
+	</insert>
+	
+	<delete id="likeDown">
+	  	delete from ArticleLike where articleId = #{articleId} and userId = #{userId}; 
+	</delete>
+	
+	
+</mapper>

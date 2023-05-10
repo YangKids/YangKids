@@ -56,7 +56,7 @@ public class ArticleRestController {
 	}
 
 	// 4. 게시글 삭제
-	@DeleteMapping("/article/{id}")
+	@DeleteMapping("/article/{articleId}")
 	public ResponseEntity<Void> delete(@PathVariable int articleId) {
 		articleService.removeArticle(articleId);
 		return new ResponseEntity<Void>(HttpStatus.OK);

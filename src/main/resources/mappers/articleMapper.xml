@@ -16,7 +16,7 @@
 
 	<!-- 게시글 등록 -->
 	<insert id="insertArticle" parameterType="Article"
-		keyProperty="id" useGeneratedKeys="true">
+		keyProperty="articleId" useGeneratedKeys="true">
 		INSERT INTO Article(boardId, articleId, title, writerId, content)
 		VALUES (#{boardId}, #{articleId}, #{title}, #{writerId}, #{content})
 	</insert>
@@ -39,7 +39,8 @@
 
 	<!-- 검색기능 -->
 	<select id="search" resultType="Article" parameterType="SearchCondition">
-		SELECT * FROM Article
+		SELECT boardId, articleId, title, content, regDate, updateDate, (SELECT COUNT(*) FROM ArticleLike WHERE Article.articleId=ArticleLike.articleId) AS likeCnt, viewCnt, isAnonymous, deletedAt, writerId 
+		FROM Article
 		<if test="key != 'none'">
 			WHERE ${key} LIKE concat('%', #{word}, '%')
 		</if>
@@ -47,5 +48,12 @@
 			ORDER BY ${orderBy} ${orderByDir}
 		</if>
 	</select>
-
+	
+	<!-- 좋아요 수 총개수  -->
+	<update id="updateLikeCnt" parameterType="int">
+		UPDATE Article
+		SET
+		likeCnt = (SELECT COUNT(*) FROM ArticleLike WHERE articleId=#{articleId})
+		WHERE articleId = #{articleId}
+	</update>
 </mapper>
