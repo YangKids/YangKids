@@ -37,7 +37,7 @@ public class ArcitleLikeServiceImpl implements ArticleLikeService {
 		//좋아요 취소됨
 		if(deleted == 1)
 			// 전체 좋아요 개수를 1 감소
-			return articleLikeDao.updateLikeCnt(articleLike.getArticleId(),1);
+			return articleLikeDao.updateLikeCnt(articleLike.getArticleId(),-1);
 		return 0;
 	}
 }
