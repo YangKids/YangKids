@@ -2,36 +2,35 @@ package com.yangkids.model.dto;
 
 public class User {
 	private String name;
-	private String phonenumber;
+	private String phoneNumber;
 	private String email;
 	private int generation;
 	private String id;
 	private String password;
-	private int age;
+	private int age = 0;
 	private String teacher;
 	private String passwordHint;
 	private String passwordAnswer;
-	private String img;
+	private String img = null; // 기본 프로필 이미지 정해지면 그 이미지의 url로 넣어야 할 듯!
 	private String gender;
 	private int isEmployed;
-	private String address;
-	private String detailAddress;
+	private String address = null;
+	private String detailAddress = null;
 	private String campus;
 	private String birth;
-	private int isAdmin;
-	
+	private int isAdmin = 0;
+	private String studentId;
+
 	public User() {
-		
+
 	}
-	
-	
-	
-	public User(String name, String phonenumber, String email, int generation, String id, String password, int age,
+
+	public User(String name, String phoneNumber, String email, int generation, String id, String password, int age,
 			String teacher, String passwordHint, String passwordAnswer, String img, String gender, int isEmployed,
-			String address, String detailAddress, String campus, String birth, int isAdmin) {
+			String address, String detailAddress, String campus, String birth, int isAdmin, String studentId) {
 		super();
 		this.name = name;
-		this.phonenumber = phonenumber;
+		this.phoneNumber = phoneNumber;
 		this.email = email;
 		this.generation = generation;
 		this.id = id;
@@ -48,9 +47,8 @@ public class User {
 		this.campus = campus;
 		this.birth = birth;
 		this.isAdmin = isAdmin;
+		this.studentId = studentId;
 	}
-
-
 
 	public String getName() {
 		return name;
@@ -60,12 +58,12 @@ public class User {
 		this.name = name;
 	}
 
-	public String getPhonenumber() {
-		return phonenumber;
+	public String getPhoneNumber() {
+		return phoneNumber;
 	}
 
-	public void setPhonenumber(String phonenumber) {
-		this.phonenumber = phonenumber;
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
 	}
 
 	public String getEmail() {
@@ -196,18 +194,21 @@ public class User {
 		this.isAdmin = isAdmin;
 	}
 
+	public String getStudentId() {
+		return studentId;
+	}
 
+	public void setStudentId(String studentId) {
+		this.studentId = studentId;
+	}
 
 	@Override
 	public String toString() {
-		return "Review [name=" + name + ", phonenumber=" + phonenumber + ", email=" + email + ", generation="
-				+ generation + ", id=" + id + ", password=" + password + ", age=" + age + ", teacher=" + teacher
-				+ ", passwordHint=" + passwordHint + ", passwordAnswer=" + passwordAnswer + ", img=" + img + ", gender="
-				+ gender + ", isEmployed=" + isEmployed + ", address=" + address + ", detailAddress=" + detailAddress
-				+ ", campus=" + campus + ", birth=" + birth + ", isAdmin=" + isAdmin + "]";
+		return "User [name=" + name + ", phoneNumber=" + phoneNumber + ", email=" + email + ", generation=" + generation
+				+ ", id=" + id + ", password=" + password + ", age=" + age + ", teacher=" + teacher + ", passwordHint="
+				+ passwordHint + ", passwordAnswer=" + passwordAnswer + ", img=" + img + ", gender=" + gender
+				+ ", isEmployed=" + isEmployed + ", address=" + address + ", detailAddress=" + detailAddress
+				+ ", campus=" + campus + ", birth=" + birth + ", isAdmin=" + isAdmin + ", studentId=" + studentId + "]";
 	}
 
-	
-	
-	
 }
