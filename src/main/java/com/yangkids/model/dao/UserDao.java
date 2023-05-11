@@ -9,7 +9,4 @@ public interface UserDao {
 	
 	// 2. 로그인 (아이디, 비밀번호로 로그인)
 	public User selectOne(String id);
-	
-	// 3. 회원탈퇴
-	public int deleteUser(User user);
 }

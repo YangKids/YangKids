@@ -8,7 +8,4 @@ public interface UserService {
 	
 	// 2. 로그인 (아이디, 비밀번호로 로그인)
 	public User login(String id, String password);
-	
-	// 3. 회원 탈퇴
-	public int signout(User user);
 }

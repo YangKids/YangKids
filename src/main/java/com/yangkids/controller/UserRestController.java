@@ -5,7 +5,6 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,59 +14,50 @@ import com.yangkids.model.dto.User;
 import com.yangkids.model.service.UserService;
 
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 
 @RestController
-@RequestMapping("/api-user")
+@RequestMapping("/user")
 @Api(tags = "User 컨트롤러")
 //@CrossOrigin("*")
-public class UserController {
+public class UserRestController {
 
 	@Autowired
 	private UserService userService;
 
-	@ApiOperation(value = "회원가입")
+	// 1. 회원가입 (Create)
 	@PostMapping("/signup")
 	public ResponseEntity<?> signup(User user) {
 		int result = userService.signup(user);
 		// 회원가입 성공한 경우
 		if (result > 0) {
 			return new ResponseEntity<Integer>(result, HttpStatus.CREATED);
-		}
+		}		
 		// 회원가입 실패한 경우
 		return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
 	}
 
-	@ApiOperation(value = "회원탈퇴")
-	@DeleteMapping("/signout")
-	public ResponseEntity<?> signout(User user) {
-		// 회원 탈퇴 과정에서 아이디, 비밀번호 외에 메일 등 추가 정보들 더 쓰게 될까봐 User 객체 자체를 넘겨주도록 했습니다.
-		int result = userService.signout(user);
-		// 회원탈퇴 성공한 경우
-		if (result > 0) {
-			return new ResponseEntity<Integer>(result, HttpStatus.CREATED);
-		}
-		// 회원탈퇴 실패한 경우
-		return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
-	}
-
-	@ApiOperation(value = "로그인", produces = "text/plain;charset=UTF-8")
-	@PostMapping("/login")
-	public ResponseEntity<?> login(User user, HttpSession session) {
+	// 2. 로그인 (Read)
+	@PostMapping("login")
+	public ResponseEntity<?> login(User user, HttpSession session){
 		User tmp = userService.login(user.getId(), user.getPassword());
 		// 로그인 실패
-		if (tmp == null) {
+		if(tmp == null) {
 			return new ResponseEntity<Void>(HttpStatus.UNAUTHORIZED);
 		}
 		// 로그인 성공
-		session.setAttribute("loginUser", tmp);
+		session.setAttribute("loginUser", tmp);                  
 		return new ResponseEntity<String>(tmp.getName(), HttpStatus.OK); // 일단 이름만 프론트로 돌려주기
 	}
-
-	@ApiOperation(value = "로그아웃")
-	@GetMapping("/logout")
+	
+	
+	// 3. 로그아웃 ()
+	@GetMapping("logout")
 	public ResponseEntity<Void> logout(HttpSession session) {
 		session.removeAttribute("loginUser");
 		return new ResponseEntity<Void>(HttpStatus.OK);
+
 	}
+	
+	// 4. 회원 탈퇴 (Delete)
+	
 }
