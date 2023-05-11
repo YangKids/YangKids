@@ -51,4 +51,16 @@ public class UserServiceImpl implements UserService {
 		return null;
 	}
 
+	@Override
+	public int signout(User user) {
+		try {
+			String encPw = sha.doEncrypt(user.getPassword());
+			user.setPassword(encPw);
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+		
+		return userDao.deleteUser(user);
+	}
+
 }
