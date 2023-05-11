@@ -16,33 +16,54 @@ import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping("/api-commentLike")
-@Api(tags="CommentLike 컨트롤러")
+@Api(tags = "CommentLike 컨트롤러")
 public class CommentLikeRestController {
-	
+
 	@Autowired
 	private CommentLikeService commentLikeService;
-	
-	@ApiOperation(value="좋아요 추가")
+
+	@ApiOperation(value = "좋아요 추가")
 	@PostMapping("/likeup")
-	public ResponseEntity<?> likeup(CommentLike commentLike){
-		// 현재 userId와 commentId가 일치하는 경우, 좋아요가 되어있지 않으면 insert해주자
-		int likeCnt = commentLikeService.countLike(commentLike);
-		if(likeCnt==0) {
-			commentLikeService.createLike(commentLike);
-			return new ResponseEntity<Void>(HttpStatus.OK);
+	public ResponseEntity<?> likeup(CommentLike commentLike) {
+		try {
+			// 현재 userId와 commentId가 일치하는 경우, 좋아요가 되어있지 않으면 insert해주자
+			int likeCnt = commentLikeService.countLike(commentLike);
+			if (likeCnt == 0) {
+				int insertResult = commentLikeService.createLike(commentLike);
+				// 좋아요 추가에 실패했으면 예외발생
+				if (insertResult == 0)
+					throw new Exception();
+				return new ResponseEntity<Void>(HttpStatus.OK);
+			} // 현재 userId와 commentId가 일치하는 경우 좋아요가 되어있는데 insert 시도하면 BAD_REQUEST 발생
+			return new ResponseEntity<String>("already pressed like", HttpStatus.BAD_REQUEST);
+		} catch (Exception e) {
+			return exceptionHandling(e);
 		}
-		return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
 	}
-	
-	@ApiOperation(value="좋아요 취소")
+
+	@ApiOperation(value = "좋아요 취소")
 	@DeleteMapping("/likeDown")
-	public ResponseEntity<?> likeDown(CommentLike commentLike){
-		int likeCnt = commentLikeService.countLike(commentLike);
-		if(likeCnt == 1) {
-			commentLikeService.deleteLike(commentLike);
-			return new ResponseEntity<Void>(HttpStatus.OK);			
+	public ResponseEntity<?> likeDown(CommentLike commentLike) {
+		try {
+			// 현재 userId와 commentId가 일치하는 경우 좋아요가 되어있으면 delete해주자
+			int likeCnt = commentLikeService.countLike(commentLike);
+			if (likeCnt == 1) {
+				int deleteResult = commentLikeService.deleteLike(commentLike);
+				// 좋아요 삭제에 실패했으면 예외발생
+				if (deleteResult == 0)
+					throw new Exception();
+				return new ResponseEntity<Void>(HttpStatus.OK);
+			}
+			// 현재 userId와 commentId가 일치하는 경우 좋아요가 되어있지않는데 delete 시도하면 BAD_REQUEST 발생
+			return new ResponseEntity<String>("didn`t press like", HttpStatus.BAD_REQUEST);
+		} catch (Exception e) {
+			return exceptionHandling(e);
 		}
-		return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
-		
+	}
+
+	// 예외 처리
+	private ResponseEntity<String> exceptionHandling(Exception e) {
+		e.printStackTrace();
+		return new ResponseEntity<String>("Sorry: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 }
