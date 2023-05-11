@@ -18,9 +18,10 @@ import com.yangkids.model.dto.Comment;
 import com.yangkids.model.service.CommentService;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api-comment")
 @Api(tags = "Comment 컨트롤러")
 //@CrossOrigin("*")
 public class CommentRestController {
@@ -28,12 +29,11 @@ public class CommentRestController {
 	@Autowired
 	private CommentService commentService;
 	
-	//게시글 별 댓글 목록
-	@GetMapping("/comment")
-	public ResponseEntity<?> list(int articleId){
+	@ApiOperation(value = "댓글 목록", notes = "articleId에 해당하는 댓글 목록 가져옴")
+	@GetMapping("/list/{articleId}")
+	public ResponseEntity<?> list(@PathVariable int articleId){
 		List<Comment> list = commentService.getCommentList(articleId);
 		
-		//가져올 댓글 없으면
 		if(list==null || list.size()==0) {
 			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 		}
@@ -42,13 +42,12 @@ public class CommentRestController {
 	}
 	
 	
-	//댓글 등록
-	@PostMapping("/comment")
+	@ApiOperation(value = "댓글 등록")
+	@PostMapping("/write")
 	public ResponseEntity<?> write(Comment comment){
 		try {
 			int result = commentService.writeComment(comment);
 			
-			//댓글 등록에 실패했으면 예외발생
 			if(result==0) throw new Exception();
 			
 			return new ResponseEntity<Comment>(comment, HttpStatus.CREATED);
@@ -58,13 +57,12 @@ public class CommentRestController {
         }
 	}
 	
-	//댓글 수정
-	@PutMapping("/comment")
+	@ApiOperation(value = "댓글 수정")
+	@PutMapping("/update")
 	public ResponseEntity<?> update(@RequestBody Comment comment){
 		try {
 			int result = commentService.modifyComment(comment);
 			
-			//댓글 수정에 실패했으면 예외발생
 			if(result==0) throw new Exception();
 			
 			return new ResponseEntity<Void>(HttpStatus.OK);
@@ -74,13 +72,12 @@ public class CommentRestController {
         }
 	}
 	
-	//댓글 삭제
-	@DeleteMapping("/comment/{commentId}")
+	@ApiOperation(value = "댓글 삭제")
+	@DeleteMapping("/delete/{commentId}")
 	public ResponseEntity<?> delete(@PathVariable int commentId){
 		try {
 			int result = commentService.removeComment(commentId);
 			
-			//댓글 삭제에 실패했으면 예외발생
 			if(result==0) throw new Exception();
 			
 			return new ResponseEntity<Void>(HttpStatus.OK);
