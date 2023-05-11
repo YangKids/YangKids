@@ -38,10 +38,9 @@
 
 	<!-- 검색기능 -->
 	<select id="search" resultType="Article" parameterType="SearchCondition">
-		SELECT *
-		FROM Article
+		SELECT * FROM Article WHERE deletedAt IS NULL
 		<if test="key != 'none'">
-			WHERE ${key} LIKE concat('%', #{word}, '%')
+			AND ${key} LIKE concat('%', #{word}, '%')
 		</if>
 		<if test="orderBy != 'none'">
 			ORDER BY ${orderBy} ${orderByDir}
