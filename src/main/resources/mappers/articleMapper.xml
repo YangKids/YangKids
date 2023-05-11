@@ -6,12 +6,12 @@
 
 	<!-- 전체글 조회 -->
 	<select id="selectAll" parameterType="int" resultType="Article">
-		SELECT * FROM Article WHERE boardId=#{boardId} AND deletedAt IS NULL;
+		SELECT * FROM Article WHERE boardId=#{boardId} AND deletedAt IS NULL
 	</select>
 
 	<!-- 상세글 조회 -->
 	<select id="selectOne" parameterType="int" resultType="Article">
-		SELECT * FROM Article WHERE articleId = #{articleId} AND deletedAt IS NULL
+		SELECT * FROM Article WHERE articleId = #{articleId}
 	</select>
 
 	<!-- 게시글 등록 -->
@@ -38,7 +38,7 @@
 
 	<!-- 검색기능 -->
 	<select id="search" resultType="Article" parameterType="SearchCondition">
-		SELECT boardId, articleId, title, content, regDate, updateDate, (SELECT COUNT(*) FROM ArticleLike WHERE Article.articleId=ArticleLike.articleId) AS likeCnt, viewCnt, isAnonymous, deletedAt, writerId 
+		SELECT *
 		FROM Article
 		<if test="key != 'none'">
 			WHERE ${key} LIKE concat('%', #{word}, '%')
