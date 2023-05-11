@@ -18,21 +18,21 @@ import com.yangkids.model.dto.Recomment;
 import com.yangkids.model.service.RecommentService;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api-recomment")
 @Api(tags = "Recomment 컨트롤러")
 public class RecommentRestController {
 
 	@Autowired
 	private RecommentService recommentService;
 
-	// 대댓글 목록
-	@GetMapping("/recomment")
-	public ResponseEntity<?> list(int commentId) {
+	@ApiOperation(value = "대댓글 목록", notes = "commentId에 해당하는 대댓글 목록 가져옴")
+	@GetMapping("/list/{commentId}")
+	public ResponseEntity<?> list(@PathVariable int commentId) {
 		List<Recomment> list = recommentService.getRecommentList(commentId);
 
-		// 가져올 대댓글 없으면
 		if (list == null || list.size() == 0) {
 			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 		}
@@ -40,13 +40,12 @@ public class RecommentRestController {
 		return new ResponseEntity<List<Recomment>>(list, HttpStatus.OK);
 	}
 
-	// 대댓글 등록
-	@PostMapping("/recomment")
+	@ApiOperation(value = "대댓글 등록")
+	@PostMapping("/write")
 	public ResponseEntity<?> write(Recomment recomment) {
 		try {
 			int result = recommentService.writeRecomment(recomment);
 
-			// 대댓글 등록에 실패했으면 예외발생
 			if (result == 0)
 				throw new Exception();
 
@@ -57,13 +56,12 @@ public class RecommentRestController {
 		}
 	}
 
-	// 대댓글 수정
-	@PutMapping("/recomment")
+	@ApiOperation(value = "대댓글 수정")
+	@PutMapping("/update")
 	public ResponseEntity<?> update(@RequestBody Recomment recomment) {
 		try {
 			int result = recommentService.modifyRecomment(recomment);
 
-			// 대댓글 수정에 실패했으면 예외발생
 			if (result == 0)
 				throw new Exception();
 
@@ -74,13 +72,12 @@ public class RecommentRestController {
 		}
 	}
 
-	// 대댓글 삭제
-	@DeleteMapping("/recomment/{recommentId}")
+	@ApiOperation(value = "대댓글 삭제")
+	@DeleteMapping("/delete/{recommentId}")
 	public ResponseEntity<?> delete(@PathVariable int recommentId) {
 		try {
 			int result = recommentService.removeRecomment(recommentId);
 
-			// 대댓글 삭제에 실패했으면 예외발생
 			if (result == 0)
 				throw new Exception();
 
