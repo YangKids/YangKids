@@ -10,10 +10,9 @@
 	</select>
 
 	<!-- 댓글 등록 -->
-	<insert id="insertComment" parameterType="Comment">
-		INSERT INTO Comment(articleId, content, writerId)
-		VALUES
-		(#{articleId}, #{content}, #{writerId})
+	<insert id="insertComment" parameterType="Comment" keyProperty="commentId" useGeneratedKeys="true">
+		INSERT INTO Comment(articleId, commentId, content, writerId)
+		VALUES (#{articleId}, #{commentId}, #{content}, #{writerId})
 	</insert>
 
 	<!-- 댓글 삭제 -->
