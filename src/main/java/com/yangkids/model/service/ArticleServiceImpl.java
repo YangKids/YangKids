@@ -33,25 +33,27 @@ public class ArticleServiceImpl implements ArticleService {
 
 	@Transactional
 	@Override
-	public void writeArticle(Article article) {
-		articleDao.insertArticle(article);
+	public int writeArticle(Article article) {
+		int result = articleDao.insertArticle(article);
+		return result;
 	}
 
 	@Transactional
 	@Override
-	public void removeArticle(int articleId) {
-		articleDao.deleteArticle(articleId);
+	public int removeArticle(int articleId) {
+		int result = articleDao.deleteArticle(articleId);
+		return result;
 	}
 
 	@Transactional
 	@Override
-	public void modifyArticle(Article article) {
-		articleDao.updateArticle(article);
+	public int modifyArticle(Article article) {
+		int result = articleDao.updateArticle(article);
+		return result;
 	}
 
 	@Override
 	public List<Article> search(SearchCondition condition) {
-//		articleDao.updateLikeCnt(articleId);
 		return articleDao.search(condition);
 	}
 

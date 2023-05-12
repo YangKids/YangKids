@@ -48,23 +48,45 @@ public class ArticleRestController {
 
 	@ApiOperation(value = "게시글 등록")
 	@PostMapping("/write")
-	public ResponseEntity<Article> write(Article article) {
-		articleService.writeArticle(article);
-		return new ResponseEntity<Article>(article, HttpStatus.CREATED);
+	public ResponseEntity<?> write(Article article) {
+		try {
+			int result = articleService.writeArticle(article);
+			
+			if(result==0) throw new Exception();
+			
+			return new ResponseEntity<Article>(article, HttpStatus.CREATED);
+		}catch(Exception e) {
+			return exceptionHandling(e);
+		}
 	}
 
 	@ApiOperation(value = "게시글 삭제")
 	@DeleteMapping("/delete/{articleId}")
-	public ResponseEntity<Void> delete(@PathVariable int articleId) {
-		articleService.removeArticle(articleId);
-		return new ResponseEntity<Void>(HttpStatus.OK);
+	public ResponseEntity<?> delete(@PathVariable int articleId) {
+		try {
+			int result = articleService.removeArticle(articleId);
+			
+			if(result==0) throw new Exception();
+			
+			return new ResponseEntity<Void>(HttpStatus.OK);
+		}catch(Exception e) {
+			return exceptionHandling(e);
+		}
 	}
 
 	@ApiOperation(value = "게시글 수정")
 	@PutMapping("/update")
-	public ResponseEntity<Void> update(@RequestBody Article article) {
-		articleService.modifyArticle(article);
-		return new ResponseEntity<Void>(HttpStatus.OK);
+	public ResponseEntity<?> update(@RequestBody Article article) {
+		try {
+			int result = articleService.modifyArticle(article);
+			
+			if(result==0) throw new Exception();
+			
+			return new ResponseEntity<Void>(HttpStatus.OK);
+			
+		}catch (Exception e) {
+            return exceptionHandling(e);
+        }
 	}
 	
 	@ApiOperation(value = "게시글 검색", notes = "key: 검색 조건, word: 검색어")
@@ -77,4 +99,9 @@ public class ArticleRestController {
 		return new ResponseEntity<List<Article>>(list, HttpStatus.OK);
 	}
 
+	//예외 처리
+	private ResponseEntity<String> exceptionHandling(Exception e) {
+	     e.printStackTrace();
+	     return new ResponseEntity<String>("Sorry: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+	}
 }
