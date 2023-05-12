@@ -15,13 +15,13 @@ public interface ArticleService {
 	public Article readArticle(int articleId); 
 	
 	//게시글 작성
-	public void writeArticle(Article article);
+	public int writeArticle(Article article);
 	
 	//게시글 삭제 
-	public void removeArticle(int articleid);
+	public int removeArticle(int articleid);
 	
 	//게시글 수정
-	public void modifyArticle(Article article);
+	public int modifyArticle(Article article);
 	
 	//검색 버튼을 눌렀을 때 처리하기 위한 메서드
 	public List<Article> search(SearchCondition condition);

@@ -14,13 +14,13 @@ public interface ArticleDao {
 	public Article selectOne(int articleId);
 
 	// 게시글 등록
-	public void insertArticle(Article article);
+	public int insertArticle(Article article);
 
 	// 게시글 삭제
-	public void deleteArticle(int articleId);
+	public int deleteArticle(int articleId);
 
 	// 게시글 수정
-	public void updateArticle(Article article);
+	public int updateArticle(Article article);
 
 	// 조회수 증가
 	public void updateViewCnt(int articleid);
