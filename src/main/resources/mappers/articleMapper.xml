@@ -16,8 +16,8 @@
 
 	<!-- 게시글 등록 -->
 	<insert id="insertArticle" parameterType="Article" keyProperty="articleId" useGeneratedKeys="true">
-		INSERT INTO Article(boardId, articleId, title, writerId, content)
-		VALUES (#{boardId}, #{articleId}, #{title}, #{writerId}, #{content})
+		INSERT INTO Article(boardId, articleId, title, writerId, content, img)
+		VALUES (#{boardId}, #{articleId}, #{title}, #{writerId}, #{content}, #{img})
 	</insert>
 
 	<!-- 게시글 삭제 -->

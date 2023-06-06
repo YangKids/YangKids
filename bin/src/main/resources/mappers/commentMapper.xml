@@ -6,20 +6,18 @@
 
 	<!-- 댓글 목록 조회 -->
 	<select id="selectAll" parameterType="int" resultType="Comment">
-		SELECT * FROM Comment WHERE articleId=${articleId};
+		SELECT * FROM Comment WHERE articleId=${articleId} AND deletedAt IS NULL;
 	</select>
 
 	<!-- 댓글 등록 -->
-	<insert id="insertComment" parameterType="Comment">
-		INSERT INTO Comment(articleId, content, writerId)
-		VALUES
-		(#{articleId}, #{content}, #{writerId})
+	<insert id="insertComment" parameterType="Comment" keyProperty="commentId" useGeneratedKeys="true">
+		INSERT INTO Comment(articleId, commentId, content, writerId)
+		VALUES (#{articleId}, #{commentId}, #{content}, #{writerId})
 	</insert>
 
 	<!-- 댓글 삭제 -->
 	<delete id="deleteComment" parameterType="int">
-		DELETE FROM Comment
-		WHERE commentId = #{commentId}
+		UPDATE Comment SET deletedAt=now() WHERE commentId=#{commentId}
 	</delete>
 
 	<!-- 댓글 수정 -->

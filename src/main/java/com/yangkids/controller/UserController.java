@@ -9,9 +9,12 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.yangkids.model.dto.User;
+import com.yangkids.model.service.S3Service;
 import com.yangkids.model.service.UserService;
 
 import io.swagger.annotations.Api;
@@ -25,10 +28,15 @@ public class UserController {
 
 	@Autowired
 	private UserService userService;
-
+	@Autowired
+	private S3Service s3Service;
+	
+	
 	@ApiOperation(value = "회원가입")
 	@PostMapping("/signup")
-	public ResponseEntity<?> signup(User user) {
+	public ResponseEntity<?> signup(User user, @RequestParam("file") MultipartFile file) {
+		String imgPath = s3Service.saveFile(file);
+		user.setImg("https://d3brc3t3x7lzht.cloudfront.net/"+imgPath);
 		int result = userService.signup(user);
 		// 회원가입 성공한 경우
 		if (result > 0) {

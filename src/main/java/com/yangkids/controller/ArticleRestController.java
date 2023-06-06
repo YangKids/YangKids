@@ -12,11 +12,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.yangkids.model.dto.Article;
 import com.yangkids.model.dto.SearchCondition;
 import com.yangkids.model.service.ArticleService;
+import com.yangkids.model.service.S3Service;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -29,6 +32,8 @@ public class ArticleRestController {
 
 	@Autowired
 	private ArticleService articleService;
+	@Autowired
+	private S3Service s3Service;
 
 	@ApiOperation(value = "게시글 목록")
 	@GetMapping("/board/{boardId}")
@@ -48,12 +53,13 @@ public class ArticleRestController {
 
 	@ApiOperation(value = "게시글 등록")
 	@PostMapping("/write")
-	public ResponseEntity<?> write(Article article) {
+	public ResponseEntity<?> write(Article article, @RequestParam("file") MultipartFile file) {
 		try {
 			int result = articleService.writeArticle(article);
 			
 			if(result==0) throw new Exception();
-			
+			String imgPath = s3Service.saveFile(file);
+			article.setImg("https://d3brc3t3x7lzht.cloudfront.net/"+imgPath);
 			return new ResponseEntity<Article>(article, HttpStatus.CREATED);
 		}catch(Exception e) {
 			return exceptionHandling(e);

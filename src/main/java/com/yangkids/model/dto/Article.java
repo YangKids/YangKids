@@ -12,7 +12,7 @@ public class Article {
 	int isAnonymous;
 	String deletedAt;
 	String writerId;
-	
+	String img;
 	
 	public Article() {
 		super();
@@ -20,7 +20,7 @@ public class Article {
 
 
 	public Article(int boardId, int articleId, String title, String content, String regDate, String updateDate,
-			int likeCnt, int viewCnt, int isAnonymous, String deletedAt, String writerId) {
+			int likeCnt, String img, int viewCnt, int isAnonymous, String deletedAt, String writerId) {
 		super();
 		this.boardId = boardId;
 		this.articleId = articleId;
@@ -33,6 +33,19 @@ public class Article {
 		this.isAnonymous = isAnonymous;
 		this.deletedAt = deletedAt;
 		this.writerId = writerId;
+		this.img = img;
+	}
+
+	
+	
+
+	public String getImg() {
+		return img;
+	}
+
+
+	public void setImg(String img) {
+		this.img = img;
 	}
 
 
