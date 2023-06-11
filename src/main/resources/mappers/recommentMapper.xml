@@ -11,8 +11,8 @@
 
 	<!-- 대댓글 등록 -->
 	<insert id="insertRecomment" parameterType="Recomment" keyProperty="recommentId" useGeneratedKeys="true">
-		INSERT INTO Recomment(commentId, recommentId, content, writerId)
-		VALUES (#{commentId}, #{recommentId}, #{content}, #{writerId})
+		INSERT INTO Recomment(commentId, recommentId, content, writerId, isAnonymous)
+		VALUES (#{commentId}, #{recommentId}, #{content}, #{writerId}, #{isAnonymous})
 	</insert>
 
 	<!-- 대댓글 삭제 -->
@@ -23,7 +23,7 @@
 
 	<!-- 대댓글 수정 -->
 	<update id="updateRecomment" parameterType="Recomment">
-		UPDATE Recomment SET content=#{content}, isModified=1
+		UPDATE Recomment SET content=#{content}, isAnonymous=#{isAnonymous}, isModified=1
 		WHERE recommentId=#{recommentId}
 	</update>
 

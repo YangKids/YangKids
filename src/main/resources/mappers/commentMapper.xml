@@ -11,8 +11,8 @@
 
 	<!-- 댓글 등록 -->
 	<insert id="insertComment" parameterType="Comment" keyProperty="commentId" useGeneratedKeys="true">
-		INSERT INTO Comment(articleId, commentId, content, writerId)
-		VALUES (#{articleId}, #{commentId}, #{content}, #{writerId})
+		INSERT INTO Comment(articleId, commentId, content, writerId, isAnonymous)
+		VALUES (#{articleId}, #{commentId}, #{content}, #{writerId}, #{isAnonymous})
 	</insert>
 
 	<!-- 댓글 삭제 -->
@@ -22,7 +22,7 @@
 
 	<!-- 댓글 수정 -->
 	<update id="updateComment" parameterType="Comment">
-		UPDATE Comment SET content=#{content}, isModified=1
+		UPDATE Comment SET content=#{content}, isAnonymous=#{isAnonymous}, isModified=1
 		WHERE commentId=#{commentId}
 	</update>
 
