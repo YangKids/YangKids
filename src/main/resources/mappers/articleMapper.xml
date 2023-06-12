@@ -6,7 +6,7 @@
 
 	<!-- 전체글 조회 -->
 	<select id="selectAll" parameterType="int" resultType="Article">
-		SELECT * FROM Article WHERE boardId=#{boardId} AND deletedAt IS NULL
+		SELECT * FROM Article WHERE boardId=#{boardId} AND deletedAt IS NULL ORDER BY regDate DESC
 	</select>
 
 	<!-- 상세글 조회 -->
@@ -16,8 +16,8 @@
 
 	<!-- 게시글 등록 -->
 	<insert id="insertArticle" parameterType="Article" keyProperty="articleId" useGeneratedKeys="true">
-		INSERT INTO Article(boardId, articleId, title, writerId, content, img)
-		VALUES (#{boardId}, #{articleId}, #{title}, #{writerId}, #{content}, #{img})
+		INSERT INTO Article(boardId, articleId, title, writerId, isAnonymous, content, img)
+		VALUES (#{boardId}, #{articleId}, #{title}, #{writerId}, #{isAnonymous}, #{content}, #{img})
 	</insert>
 
 	<!-- 게시글 삭제 -->
@@ -32,7 +32,7 @@
 
 	<!-- 게시글 수정 -->
 	<update id="updateArticle" parameterType="Article">
-		UPDATE Article SET title=#{title}, content=#{content}, updateDate = now()
+		UPDATE Article SET title=#{title}, content=#{content}, isAnonymous=#{isAnonymous}, updateDate = now()
 		WHERE articleId=#{articleId}
 	</update>
 
@@ -41,6 +41,9 @@
 		SELECT * FROM Article WHERE deletedAt IS NULL
 		<if test="key != 'none'">
 			AND ${key} LIKE concat('%', #{word}, '%')
+		</if>
+		<if test="orderBy == 'none'">
+			ORDER BY regDate DESC
 		</if>
 		<if test="orderBy != 'none'">
 			ORDER BY ${orderBy} ${orderByDir}
