@@ -6,7 +6,19 @@
 
 	<!-- 전체글 조회 -->
 	<select id="selectAll" parameterType="int" resultType="Article">
-		SELECT * FROM Article WHERE boardId=#{boardId} AND deletedAt IS NULL ORDER BY regDate DESC
+		SELECT
+		Article.*, User.name, User.img as writerImg,
+		(SELECT count(*) FROM Comment 
+		WHERE Comment.articleId = Article.articleId)
+		as commentCnt,
+		(SELECT count(*) FROM Comment JOIN Recomment
+		ON Comment.commentId = Recomment.commentId 
+		WHERE Comment.articleId = Article.articleId) 
+		as recommentCnt
+		FROM Article join User
+		ON Article.writerId = User.id
+		WHERE boardId=#{boardId} AND deletedAt IS
+		NULL ORDER BY regDate DESC
 	</select>
 
 	<!-- 상세글 조회 -->
