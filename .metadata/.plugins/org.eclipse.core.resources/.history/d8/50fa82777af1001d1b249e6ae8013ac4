@@ -1,0 +1,5 @@
+package com.yangkids.config;
+
+public class EmailConfig {
+
+}
