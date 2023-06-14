@@ -71,8 +71,8 @@ public class ArticleRestController {
 	}
 
 	@ApiOperation(value = "게시글 삭제")
-	@DeleteMapping("/delete/{articleId}")
-	public ResponseEntity<String> delete(@PathVariable int articleId) {
+	@DeleteMapping("/delete")
+	public ResponseEntity<String> delete(int articleId) {
 		int result = articleService.removeArticle(articleId);
 			
 		if(result==0) return new ResponseEntity<String>(FAIL,HttpStatus.CONFLICT);

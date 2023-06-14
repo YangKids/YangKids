@@ -69,8 +69,8 @@ public class RecommentRestController {
 	}
 
 	@ApiOperation(value = "대댓글 삭제")
-	@DeleteMapping("/delete/{recommentId}")
-	public ResponseEntity<?> delete(@PathVariable int recommentId) {
+	@DeleteMapping("/delete")
+	public ResponseEntity<?> delete(int recommentId) {
 		int result = recommentService.removeRecomment(recommentId);
 
 		if (result == 0) return new ResponseEntity<String>(FAIL, HttpStatus.CONFLICT);

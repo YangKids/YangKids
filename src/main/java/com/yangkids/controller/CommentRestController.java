@@ -70,8 +70,8 @@ public class CommentRestController {
 	}
 
 	@ApiOperation(value = "댓글 삭제")
-	@DeleteMapping("/delete/{commentId}")
-	public ResponseEntity<?> delete(@PathVariable int commentId) {
+	@DeleteMapping("/delete")
+	public ResponseEntity<?> delete(int commentId) {
 		int result = commentService.removeComment(commentId);
 
 		if (result == 0) return new ResponseEntity<String>(FAIL, HttpStatus.CONFLICT);
