@@ -1,11 +1,12 @@
 package com.yangkids.model.dto;
 
 public class User {
+	private int numId;
+	private String id;
 	private String name;
 	private String phoneNumber;
 	private String email;
 	private int generation;
-	private String id;
 	private String password;
 	private int age = 0;
 	private String teacher;
@@ -25,10 +26,12 @@ public class User {
 
 	}
 
-	public User(String name, String phoneNumber, String email, int generation, String id, String password, int age,
-			String teacher, String passwordHint, String passwordAnswer, String img, String gender, int isEmployed,
-			String address, String detailAddress, String campus, String birth, int isAdmin, String studentId) {
+	public User(int numId, String name, String phoneNumber, String email, int generation, String id, String password,
+			int age, String teacher, String passwordHint, String passwordAnswer, String img, String gender,
+			int isEmployed, String address, String detailAddress, String campus, String birth, int isAdmin,
+			String studentId) {
 		super();
+		this.numId = numId;
 		this.name = name;
 		this.phoneNumber = phoneNumber;
 		this.email = email;
@@ -48,6 +51,14 @@ public class User {
 		this.birth = birth;
 		this.isAdmin = isAdmin;
 		this.studentId = studentId;
+	}
+
+	public int getNumId() {
+		return numId;
+	}
+
+	public void setNumId(int numId) {
+		this.numId = numId;
 	}
 
 	public String getName() {
@@ -204,11 +215,12 @@ public class User {
 
 	@Override
 	public String toString() {
-		return "User [name=" + name + ", phoneNumber=" + phoneNumber + ", email=" + email + ", generation=" + generation
-				+ ", id=" + id + ", password=" + password + ", age=" + age + ", teacher=" + teacher + ", passwordHint="
-				+ passwordHint + ", passwordAnswer=" + passwordAnswer + ", img=" + img + ", gender=" + gender
-				+ ", isEmployed=" + isEmployed + ", address=" + address + ", detailAddress=" + detailAddress
-				+ ", campus=" + campus + ", birth=" + birth + ", isAdmin=" + isAdmin + ", studentId=" + studentId + "]";
+		return "User [numId=" + numId + ", id=" + id + ", name=" + name + ", phoneNumber=" + phoneNumber + ", email="
+				+ email + ", generation=" + generation + ", password=" + password + ", age=" + age + ", teacher="
+				+ teacher + ", passwordHint=" + passwordHint + ", passwordAnswer=" + passwordAnswer + ", img=" + img
+				+ ", gender=" + gender + ", isEmployed=" + isEmployed + ", address=" + address + ", detailAddress="
+				+ detailAddress + ", campus=" + campus + ", birth=" + birth + ", isAdmin=" + isAdmin + ", studentId="
+				+ studentId + "]";
 	}
 
 }

@@ -1,0 +1,5 @@
+package com.yangkids.model.service;
+
+public class EmailServiceImpl {
+
+}

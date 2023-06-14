@@ -5,9 +5,12 @@
 <mapper namespace="com.yangkids.model.dao.UserDao">
 	<!-- 회원가입 -->
 	<insert id="insertUser" parameterType="User">
-		INSERT INTO `User`
+		INSERT INTO `User`(id, name, phoneNumber, email, generation, password,
+		age, teacher, passwordHint, passwordAnswer, img,
+		gender, isEmployed, address, detailAddress, campus,
+		birth, isAdmin, studentId)
 		VALUES
-		(#{name}, #{phoneNumber}, #{email}, #{generation}, #{id}, #{password},
+		(#{id}, #{name}, #{phoneNumber}, #{email}, #{generation}, #{password},
 		#{age}, #{teacher}, #{passwordHint}, #{passwordAnswer}, #{img},
 		#{gender}, #{isEmployed}, #{address}, #{detailAddress}, #{campus},
 		#{birth}, #{isAdmin}, #{studentId})
@@ -20,10 +23,42 @@
 		FROM `User`
 		WHERE id = #{id}
 	</select>
-	
+
 	<!-- 회원탈퇴 -->
 	<delete id="deleteUser" parameterType="User">
 		DELETE FROM `User`
-		WHERE id = #{id} AND password = #{password}
+		WHERE id
+		= #{id} AND password = #{password}
 	</delete>
+
+	<!-- 사용자 목록 (관리자 페이지) -->
+	<select id="getUsers" resultType="User">
+		SELECT *
+		FROM `User`
+	</select>
+
+	<!-- 아이디 중복 확인 -->
+	<select id="selectByLoginId" parameterType="String"
+		resultType="User">
+		SELECT *
+		FROM `User`
+		WHERE id = #{id}
+	</select>
+	
+	<!-- 본인 확인 -->
+	<select id="selectUser" parameterType="map" resultType="User">
+		SELECT *
+		FROM `User`
+		WHERE numId =#{numId} AND password = #{password}
+	</select>
+	
+	<!-- 회원정보-->
+	<update id="updateUser" parameterType="User">
+		UPDATE `User`
+		SET id = #{id}, name = #{name}, password = #{phoneNumber}, email = #{email}, generation = #{generation},
+		password = #{password}, age = #{age}, teacher = #{teacher}, passwordHint = #{passwordHint}, passwordAnswer = #{passwordAnswer},
+		img = #{img}, gender = #{gender}, isEmployed = #{isEmployed}, address = #{address}, detailAddress = #{detailAddress},
+		campus = #{campus}, birth = #{birth}, isAdmin = #{isAdmin}, studentId = #{studentId}
+		WHERE numId = #{numId};
+	</update>
 </mapper>
