@@ -25,6 +25,9 @@ import io.swagger.annotations.ApiOperation;
 @Api(tags = "Recomment 컨트롤러")
 public class RecommentRestController {
 
+	private static final String SUCCESS = "SUCCESS";
+	private static final String FAIL = "FAIL";
+	
 	@Autowired
 	private RecommentService recommentService;
 
@@ -59,33 +62,20 @@ public class RecommentRestController {
 	@ApiOperation(value = "대댓글 수정")
 	@PutMapping("/update")
 	public ResponseEntity<?> update(@RequestBody Recomment recomment) {
-		try {
-			int result = recommentService.modifyRecomment(recomment);
+		int result = recommentService.modifyRecomment(recomment);
 
-			if (result == 0)
-				throw new Exception();
-
-			return new ResponseEntity<Void>(HttpStatus.OK);
-
-		} catch (Exception e) {
-			return exceptionHandling(e);
-		}
+		if (result == 0) return new ResponseEntity<String>(FAIL, HttpStatus.CONFLICT);
+		return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 	}
 
 	@ApiOperation(value = "대댓글 삭제")
 	@DeleteMapping("/delete/{recommentId}")
 	public ResponseEntity<?> delete(@PathVariable int recommentId) {
-		try {
-			int result = recommentService.removeRecomment(recommentId);
+		int result = recommentService.removeRecomment(recommentId);
 
-			if (result == 0)
-				throw new Exception();
+		if (result == 0) return new ResponseEntity<String>(FAIL, HttpStatus.CONFLICT);
+		return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 
-			return new ResponseEntity<Void>(HttpStatus.OK);
-
-		} catch (Exception e) {
-			return exceptionHandling(e);
-		}
 	}
 
 	// 예외 처리
