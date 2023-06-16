@@ -10,11 +10,10 @@ public class Article {
 	int likeCnt;
 	int viewCnt;
 	int commentCnt;
-	int recommentCnt;
 	int isAnonymous;
 	String deletedAt;
 	String writerId;
-	String name;
+	String writerName;
 	String img;
 	String writerImg;
 	
@@ -24,8 +23,8 @@ public class Article {
 
 
 	public Article(int boardId, int articleId, String title, String content, String regDate, String updateDate,
-			int likeCnt, int commentCnt, int recommentCnt, String img, int viewCnt, int isAnonymous, 
-		        String deletedAt, String writerId, String name, String writerImg) {
+			int likeCnt, int commentCnt, String img, int viewCnt, int isAnonymous, 
+		        String deletedAt, String writerId, String writerName, String writerImg) {
 		super();
 		this.boardId = boardId;
 		this.articleId = articleId;
@@ -36,12 +35,11 @@ public class Article {
 		this.likeCnt = likeCnt;
 		this.viewCnt = viewCnt;
 		this.commentCnt = commentCnt;
-		this.recommentCnt = recommentCnt;
 		this.isAnonymous = isAnonymous;
 		this.deletedAt = deletedAt;
 		this.writerId = writerId;
 		this.img = img;
-		this.name = name;
+		this.writerName = writerName;
 		this.writerImg = writerImg;
 	}
 
@@ -60,17 +58,7 @@ public class Article {
 		this.commentCnt = commentCnt;
 	}
 
-
-	public int getRecommentCnt() {
-		return recommentCnt;
-	}
-
-
-	public void setRecommentCnt(int recommentCnt) {
-		this.recommentCnt = recommentCnt;
-	}
-
-
+	
 	public String getWriterImg() {
 		return writerImg;
 	}
@@ -81,12 +69,12 @@ public class Article {
 	}
 
 
-	public String getName() {
-		return name;
+	public String getWriterName() {
+		return writerName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setWriterName(String writerName) {
+		this.writerName = writerName;
 	}
 	
 	public String getImg() {
