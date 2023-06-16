@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.yangkids.model.dto.Alarm;
 import com.yangkids.model.dto.CommentLike;
+import com.yangkids.model.service.AlarmService;
 import com.yangkids.model.service.CommentLikeService;
 
 import io.swagger.annotations.Api;
@@ -22,6 +24,9 @@ public class CommentLikeRestController {
 	@Autowired
 	private CommentLikeService commentLikeService;
 
+	@Autowired
+	private AlarmService alarmService;
+
 	@ApiOperation(value = "좋아요 추가")
 	@PostMapping("/likeup")
 	public ResponseEntity<?> likeup(CommentLike commentLike) {
@@ -29,6 +34,11 @@ public class CommentLikeRestController {
 			// 현재 userId와 commentId가 일치하는 경우, 좋아요가 되어있지 않으면 insert해주자
 			int likeCnt = commentLikeService.countLike(commentLike);
 			if (likeCnt == 0) {
+				Alarm alarm = new Alarm();
+				alarm.setCommentId(commentLike.getCommentId());
+				alarm.setType("좋아요");
+				alarm.setUserId(commentLike.getUserId());
+				alarmService.writeAlarm(alarm);
 				int insertResult = commentLikeService.createLike(commentLike);
 				// 좋아요 추가에 실패했으면 예외발생
 				if (insertResult == 0)

@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.yangkids.model.dto.Alarm;
 import com.yangkids.model.dto.Comment;
+import com.yangkids.model.service.AlarmService;
 import com.yangkids.model.service.CommentService;
 
 import io.swagger.annotations.Api;
@@ -31,6 +33,9 @@ public class CommentRestController {
 
 	@Autowired
 	private CommentService commentService;
+
+	@Autowired
+	private AlarmService alarmService;
 
 	@ApiOperation(value = "댓글 목록", notes = "articleId에 해당하는 댓글 목록 가져옴")
 	@GetMapping("/list/{articleId}")
@@ -49,7 +54,11 @@ public class CommentRestController {
 	public ResponseEntity<?> write(Comment comment) {
 		try {
 			int result = commentService.writeComment(comment);
-
+			Alarm alarm = new Alarm();
+			alarm.setArticleId(comment.getArticleId());
+			alarm.setType("댓글");
+			alarm.setUserId(comment.getWriterId());
+			alarmService.writeAlarm(alarm);
 			if (result == 0)
 				throw new Exception();
 
@@ -65,7 +74,8 @@ public class CommentRestController {
 	public ResponseEntity<?> update(@RequestBody Comment comment) {
 		int result = commentService.modifyComment(comment);
 
-		if (result == 0) return new ResponseEntity<String>(FAIL, HttpStatus.CONFLICT);
+		if (result == 0)
+			return new ResponseEntity<String>(FAIL, HttpStatus.CONFLICT);
 		return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 	}
 
@@ -74,7 +84,8 @@ public class CommentRestController {
 	public ResponseEntity<?> delete(int commentId) {
 		int result = commentService.removeComment(commentId);
 
-		if (result == 0) return new ResponseEntity<String>(FAIL, HttpStatus.CONFLICT);
+		if (result == 0)
+			return new ResponseEntity<String>(FAIL, HttpStatus.CONFLICT);
 		return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 
 	}
