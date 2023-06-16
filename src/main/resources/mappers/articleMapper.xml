@@ -7,14 +7,13 @@
 	<!-- 전체글 조회 -->
 	<select id="selectAll" parameterType="int" resultType="Article">
 		SELECT
-		Article.*, User.name, User.img as writerImg,
-		(SELECT count(*) FROM Comment 
-		WHERE Comment.articleId = Article.articleId)
-		as commentCnt,
-		(SELECT count(*) FROM Comment JOIN Recomment
+		Article.*, User.name as writerName, User.img as writerImg,
+		(SELECT (SELECT count(*) FROM Comment 
+		WHERE Comment.articleId = Article.articleId)+
+        	(SELECT count(*) FROM Comment JOIN Recomment
 		ON Comment.commentId = Recomment.commentId 
-		WHERE Comment.articleId = Article.articleId) 
-		as recommentCnt
+		WHERE Comment.articleId = Article.articleId))
+		as commentCnt
 		FROM Article join User
 		ON Article.writerId = User.id
 		WHERE boardId=#{boardId} AND deletedAt IS
