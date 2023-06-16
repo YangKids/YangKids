@@ -30,6 +30,9 @@ import io.swagger.annotations.ApiOperation;
 //@CrossOrigin("*")
 public class ArticleRestController {
 
+	private static final String SUCCESS = "SUCCESS";
+	private static final String FAIL = "FAIL";
+	
 	@Autowired
 	private ArticleService articleService;
 	@Autowired
@@ -68,32 +71,21 @@ public class ArticleRestController {
 	}
 
 	@ApiOperation(value = "게시글 삭제")
-	@DeleteMapping("/delete/{articleId}")
-	public ResponseEntity<?> delete(@PathVariable int articleId) {
-		try {
-			int result = articleService.removeArticle(articleId);
+	@DeleteMapping("/delete")
+	public ResponseEntity<String> delete(int articleId) {
+		int result = articleService.removeArticle(articleId);
 			
-			if(result==0) throw new Exception();
-			
-			return new ResponseEntity<Void>(HttpStatus.OK);
-		}catch(Exception e) {
-			return exceptionHandling(e);
-		}
+		if(result==0) return new ResponseEntity<String>(FAIL,HttpStatus.CONFLICT);
+		return new ResponseEntity<String>(SUCCESS,HttpStatus.OK);
 	}
 
 	@ApiOperation(value = "게시글 수정")
 	@PutMapping("/update")
 	public ResponseEntity<?> update(@RequestBody Article article) {
-		try {
-			int result = articleService.modifyArticle(article);
+		int result = articleService.modifyArticle(article);
 			
-			if(result==0) throw new Exception();
-			
-			return new ResponseEntity<Void>(HttpStatus.OK);
-			
-		}catch (Exception e) {
-            return exceptionHandling(e);
-        }
+		if(result==0) return new ResponseEntity<String>(FAIL,HttpStatus.CONFLICT);
+		return new ResponseEntity<String>(SUCCESS,HttpStatus.OK);
 	}
 	
 	@ApiOperation(value = "게시글 검색", notes = "key: 검색 조건, word: 검색어")
