@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yangkids.model.dao.AlarmDao">
+
+	<!-- 전체 알람 조회 -->
+	<select id="selectAll" parameterType="String" resultType="Alarm">
+		SELECT
+		* FROM Alarm WHERE userId=#{userId}
+	</select>
+
+	<!-- 알람 상세 조회 -->
+	<select id="selectOne" parameterType="int" resultType="Alarm">
+		SELECT *
+		FROM Alarm WHERE alarmId = #{alarmId}
+	</select>
+
+	<!-- 알람 삭제 -->
+	<update id="deleteAlarm" parameterType="int">
+	DELETE FROM Alarm WHERE alarmId=#{alarmId}
+	</update>
+
+
+<!-- 여기서 #{userId}는 실제 알람에 저장되는게 아닌 댓글, 대댓글 작성자 혹은 좋아요를 누른 사람의 아이디입니다.  -->
+	<insert id="insertAlarm" parameterType="Alarm">
+	    <!-- 게시글 좋아요 -->
+		<if
+			test="type=='좋아요' and (articleId != null or articleId !=0)and (commentId == null or commentId ==0)and (recommentId ==null or recommentId ==0)">
+			INSERT INTO Alarm (type, userId, regDate, articleId, commentId,
+			recommentId, isChecked)
+			SELECT '좋아요', writerId, now(), #{articleId}, null, null, 0
+			FROM Article
+			WHERE articleId = #{articleId} and writerId != #{userId}
+		</if>
+		<!-- 댓글 좋아요 -->
+		<if
+			test="type== '좋아요' and (articleId == null or articleId ==0)and (commentId != null or commentId !=0)and (recommentId ==null or recommentId ==0)">
+			INSERT INTO Alarm (type, userId, regDate, articleId, commentId,
+			recommentId, isChecked)
+			SELECT '좋아요', writerId, now(),articleId, #{commentId}, null, 0
+			FROM Comment
+			WHERE commentId = #{commentId} and writerId!=#{userId}
+		</if>
+		<!-- 댓글 작성 -->
+		<if
+			test="type=='댓글' and (articleId != null or articleId !=0)and (commentId == null or commentId ==0)and (recommentId ==null or recommentId ==0) ">
+			INSERT INTO Alarm (type, userId, regDate, articleId, commentId,
+			recommentId, isChecked)
+			SELECT '댓글', writerId, now(), #{articleId}, null, null, 0
+			FROM Article
+			WHERE articleId = #{articleId} and writerId != #{userId}
+		</if>
+		<!-- 대댓글 작성 -->
+		<!-- commentId SELECT해서 한번 더 안하려고 한번에 받았음. -->
+		<if
+			test="type=='댓글'and (articleId == null or articleId ==0)and (commentId != null or commentId !=0)and (recommentId !=null or recommentId !=0)">
+			INSERT INTO Alarm (type, userId, regDate, articleId, commentId,
+			recommentId, isChecked)
+			SELECT '댓글', writerId, now(),articleId, #{commentId}, null, 0
+			FROM Comment
+			WHERE commentId=#{commentId} and writerId != #{userId}
+		</if>
+	</insert>
+
+	<!-- 알람 읽었으면 isChecked 변경  -->
+	<update id="updateAlarm" parameterType="int">
+		UPDATE Alarm SET
+		isChecked=1
+		WHERE alarmId=#{alarmId}
+	</update>
+
+
+</mapper>

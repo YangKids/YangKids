@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.yangkids.model.dto.Alarm;
 import com.yangkids.model.dto.Recomment;
+import com.yangkids.model.service.AlarmService;
 import com.yangkids.model.service.RecommentService;
 
 import io.swagger.annotations.Api;
@@ -27,9 +29,12 @@ public class RecommentRestController {
 
 	private static final String SUCCESS = "SUCCESS";
 	private static final String FAIL = "FAIL";
-	
+
 	@Autowired
 	private RecommentService recommentService;
+
+	@Autowired
+	private AlarmService alarmService;
 
 	@ApiOperation(value = "대댓글 목록", notes = "commentId에 해당하는 대댓글 목록 가져옴")
 	@GetMapping("/list/{commentId}")
@@ -49,6 +54,12 @@ public class RecommentRestController {
 		try {
 			int result = recommentService.writeRecomment(recomment);
 
+			Alarm alarm = new Alarm();
+			alarm.setCommentId(recomment.getCommentId());
+			alarm.setRecommentId(recomment.getRecommentId());
+			alarm.setType("댓글");
+			alarm.setUserId(recomment.getWriterId());
+			alarmService.writeAlarm(alarm);
 			if (result == 0)
 				throw new Exception();
 
@@ -64,7 +75,8 @@ public class RecommentRestController {
 	public ResponseEntity<?> update(@RequestBody Recomment recomment) {
 		int result = recommentService.modifyRecomment(recomment);
 
-		if (result == 0) return new ResponseEntity<String>(FAIL, HttpStatus.CONFLICT);
+		if (result == 0)
+			return new ResponseEntity<String>(FAIL, HttpStatus.CONFLICT);
 		return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 	}
 
@@ -73,7 +85,8 @@ public class RecommentRestController {
 	public ResponseEntity<?> delete(int recommentId) {
 		int result = recommentService.removeRecomment(recommentId);
 
-		if (result == 0) return new ResponseEntity<String>(FAIL, HttpStatus.CONFLICT);
+		if (result == 0)
+			return new ResponseEntity<String>(FAIL, HttpStatus.CONFLICT);
 		return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 
 	}
