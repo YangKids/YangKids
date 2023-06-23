@@ -10,13 +10,15 @@ public class Comment {
 	int likeCnt;
 	int isAnonymous;
 	String deletedAt;
+	String writerName;
+	String writerImg;
 
 	public Comment() {
 		super();
 	}
 
 	public Comment(int commentId, int articleId, String content, String writerId, String regDate, int isModified,
-			int likeCnt, int isAnonymous, String deletedAt) {
+			int likeCnt, int isAnonymous, String deletedAt, String writerName, String writerImg) {
 		super();
 		this.commentId = commentId;
 		this.articleId = articleId;
@@ -27,6 +29,8 @@ public class Comment {
 		this.likeCnt = likeCnt;
 		this.isAnonymous = isAnonymous;
 		this.deletedAt = deletedAt;
+		this.writerName = writerName;
+		this.writerImg = writerImg;
 	}
 
 	public int getCommentId() {
@@ -101,11 +105,29 @@ public class Comment {
 		this.deletedAt = deletedAt;
 	}
 
+	public String getWriterName() {
+		return writerName;
+	}
+
+	public void setWriterName(String writerName) {
+		this.writerName = writerName;
+	}
+
+	public String getWriterImg() {
+		return writerImg;
+	}
+
+	public void setWriterImg(String writerImg) {
+		this.writerImg = writerImg;
+	}
+
 	@Override
 	public String toString() {
 		return "Comment [commentId=" + commentId + ", articleId=" + articleId + ", content=" + content + ", writerId="
 				+ writerId + ", regDate=" + regDate + ", isModified=" + isModified + ", likeCnt=" + likeCnt
-				+ ", isAnonymous=" + isAnonymous + ", deletedAt=" + deletedAt + "]";
+				+ ", isAnonymous=" + isAnonymous + ", deletedAt=" + deletedAt + ", writerName=" + writerName
+				+ ", writerImg=" + writerImg + "]";
 	}
 
+	
 }

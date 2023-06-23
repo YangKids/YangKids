@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,7 +26,7 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 @RequestMapping("/api-comment")
 @Api(tags = "Comment 컨트롤러")
-//@CrossOrigin("*")
+@CrossOrigin("*")
 public class CommentRestController {
 
 	private static final String SUCCESS = "SUCCESS";
@@ -41,17 +42,15 @@ public class CommentRestController {
 	@GetMapping("/list/{articleId}")
 	public ResponseEntity<?> list(@PathVariable int articleId) {
 		List<Comment> list = commentService.getCommentList(articleId);
-
 		if (list == null || list.size() == 0) {
 			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 		}
-
 		return new ResponseEntity<List<Comment>>(list, HttpStatus.OK);
 	}
 
 	@ApiOperation(value = "댓글 등록")
 	@PostMapping("/write")
-	public ResponseEntity<?> write(Comment comment) {
+	public ResponseEntity<?> write(@RequestBody Comment comment) {
 		try {
 			int result = commentService.writeComment(comment);
 			Alarm alarm = new Alarm();
@@ -73,7 +72,6 @@ public class CommentRestController {
 	@PutMapping("/update")
 	public ResponseEntity<?> update(@RequestBody Comment comment) {
 		int result = commentService.modifyComment(comment);
-
 		if (result == 0)
 			return new ResponseEntity<String>(FAIL, HttpStatus.CONFLICT);
 		return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
@@ -83,7 +81,6 @@ public class CommentRestController {
 	@DeleteMapping("/delete")
 	public ResponseEntity<?> delete(int commentId) {
 		int result = commentService.removeComment(commentId);
-
 		if (result == 0)
 			return new ResponseEntity<String>(FAIL, HttpStatus.CONFLICT);
 		return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
