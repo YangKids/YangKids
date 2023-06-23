@@ -2,53 +2,75 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
- <mapper namespace="com.yangkids.model.dao.ArticleDao">
+<mapper namespace="com.yangkids.model.dao.ArticleDao">
 
 	<!-- 전체글 조회 -->
 	<select id="selectAll" parameterType="int" resultType="Article">
 		SELECT
 		Article.*, User.name as writerName, User.img as writerImg,
-		(SELECT (SELECT count(*) FROM Comment 
-		WHERE Comment.articleId = Article.articleId)+
-        	(SELECT count(*) FROM Comment JOIN Recomment
-		ON Comment.commentId = Recomment.commentId 
-		WHERE Comment.articleId = Article.articleId))
+		(SELECT count(*) FROM Comment
+		WHERE Comment.articleId = Article.articleId and Comment.deletedAt is null)+
+		(SELECT count(*) FROM Comment JOIN Recomment
+		ON Comment.commentId = Recomment.commentId
+		WHERE Comment.articleId = Article.articleId and Recomment.deletedAt is
+		null)
 		as commentCnt
 		FROM Article join User
 		ON Article.writerId = User.id
 		WHERE boardId=#{boardId} AND deletedAt IS
-		NULL ORDER BY regDate DESC
+		NULL ORDER BY regDate DESC;
 	</select>
 
 	<!-- 상세글 조회 -->
 	<select id="selectOne" parameterType="int" resultType="Article">
-		SELECT * FROM Article WHERE articleId = #{articleId}
+		SELECT
+		Article.*, User.name as writerName, User.img as writerImg,
+		(SELECT count(*) FROM Comment
+		WHERE Comment.articleId = Article.articleId and Comment.deletedAt is null)+
+		(SELECT count(*) FROM Comment JOIN Recomment
+		ON Comment.commentId = Recomment.commentId
+		WHERE Comment.articleId = Article.articleId and Recomment.deletedAt is
+		null)
+		as commentCnt
+		FROM Article join User
+		ON Article.writerId = User.id
+		WHERE ArticleId=#{articleId} AND deletedAt IS
+		NULL ORDER BY regDate DESC;
 	</select>
 
 	<!-- 게시글 등록 -->
-	<insert id="insertArticle" parameterType="Article" keyProperty="articleId" useGeneratedKeys="true">
-		INSERT INTO Article(boardId, articleId, title, writerId, isAnonymous, content, img)
-		VALUES (#{boardId}, #{articleId}, #{title}, #{writerId}, #{isAnonymous}, #{content}, #{img})
+	<insert id="insertArticle" parameterType="Article"
+		keyProperty="articleId" useGeneratedKeys="true">
+		INSERT INTO Article(boardId,
+		articleId, title, writerId, isAnonymous, content, img)
+		VALUES
+		(#{boardId}, #{articleId}, #{title}, #{writerId}, #{isAnonymous},
+		#{content}, #{img})
 	</insert>
 
 	<!-- 게시글 삭제 -->
 	<update id="deleteArticle" parameterType="int">
-		UPDATE Article SET deletedAt=now() WHERE articleId = #{articleId}
+		UPDATE Article SET
+		deletedAt=now() WHERE articleId = #{articleId}
 	</update>
 
 	<!-- 조회수 증가 -->
 	<update id="updateViewCnt" parameterType="int">
-		UPDATE Article SET viewCnt = viewCnt+1 WHERE articleId = #{articleId}
+		UPDATE Article SET
+		viewCnt = viewCnt+1 WHERE articleId = #{articleId}
 	</update>
 
 	<!-- 게시글 수정 -->
 	<update id="updateArticle" parameterType="Article">
-		UPDATE Article SET title=#{title}, content=#{content}, isAnonymous=#{isAnonymous}, updateDate = now()
+		UPDATE Article SET
+		title=#{title}, content=#{content}, isAnonymous=#{isAnonymous},
+		updateDate = now()
 		WHERE articleId=#{articleId}
 	</update>
 
 	<!-- 검색기능 -->
-	<select id="search" resultType="Article" parameterType="SearchCondition">
+	<select id="search" resultType="Article"
+		parameterType="SearchCondition">
 		SELECT * FROM Article WHERE deletedAt IS NULL
 		<if test="key != 'none'">
 			AND ${key} LIKE concat('%', #{word}, '%')

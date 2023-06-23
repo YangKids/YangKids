@@ -3,8 +3,10 @@ package com.yangkids.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,6 +21,7 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 @RequestMapping("/api-articleLike")
 @Api(tags = "ArticleLike 컨트롤러")
+@CrossOrigin("*")
 public class ArticleLikeRestController {
 
 	@Autowired
@@ -27,9 +30,18 @@ public class ArticleLikeRestController {
 	@Autowired
 	private AlarmService alarmService;
 
+	// 제 머리론.. like 되어있는지 안되어있는지.. 확인을 하는 방법을 모르겠어요....ㅠㅠ
+	@ApiOperation(value = "좋아요 확인")
+	@PostMapping("/like")
+	public ResponseEntity<Integer> like(@RequestBody ArticleLike articleLike) {
+		// 현재 userId와 articleId가 일치하는 경우 좋아요 되어있나?
+		int likeCnt = articleLikeService.countLike(articleLike);
+		return new ResponseEntity<Integer>(likeCnt, HttpStatus.OK);
+	}
+
 	@ApiOperation(value = "좋아요 추가")
 	@PostMapping("/likeup")
-	public ResponseEntity<?> likeup(ArticleLike articleLike) {
+	public ResponseEntity<?> likeup(@RequestBody ArticleLike articleLike) {
 		try {
 			// 현재 userId와 articleId가 일치하는 경우 좋아요가 되어있지 않으면 insert해주자
 			int likeCnt = articleLikeService.countLike(articleLike);
@@ -54,7 +66,7 @@ public class ArticleLikeRestController {
 
 	@ApiOperation(value = "좋아요 취소")
 	@DeleteMapping("/likeDown")
-	public ResponseEntity<?> likeDown(ArticleLike articleLike) {
+	public ResponseEntity<?> likeDown(@RequestBody ArticleLike articleLike) {
 		try {
 			// 현재 userId와 articleId가 일치하는 경우 좋아요가 되어있으면 delete해주자
 			int likeCnt = articleLikeService.countLike(articleLike);
