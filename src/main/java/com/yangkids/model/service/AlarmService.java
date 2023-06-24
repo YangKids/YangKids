@@ -10,9 +10,6 @@ public interface AlarmService {
 	// 유저 별 알람 목록
 	public List<Alarm> getAlarmList(String userId);
 	
-	// 알람 상세조회 (클릭시 읽는거)
-	public Alarm readAlarm(int alarmId); 
-	
 	// 알람 삭제 
 	public int removeAlarm(int alarmId);
 	

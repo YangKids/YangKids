@@ -6,14 +6,16 @@
 
 	<!-- 전체 알람 조회 -->
 	<select id="selectAll" parameterType="String" resultType="Alarm">
-		SELECT
-		* FROM Alarm WHERE userId=#{userId}
-	</select>
-
-	<!-- 알람 상세 조회 -->
-	<select id="selectOne" parameterType="int" resultType="Alarm">
-		SELECT *
-		FROM Alarm WHERE alarmId = #{alarmId}
+		SELECT a.*,
+    	COALESCE(c.content, ar.title) AS content
+		FROM
+    	Alarm a
+		LEFT JOIN
+    	Comment c ON a.commentId = c.commentId
+		LEFT JOIN
+    	Article ar ON a.articleId = ar.articleId
+		WHERE
+    	a.userId = #{userId} ORDER BY alarmId DESC
 	</select>
 
 	<!-- 알람 삭제 -->

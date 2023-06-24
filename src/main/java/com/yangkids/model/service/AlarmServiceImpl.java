@@ -27,12 +27,6 @@ public class AlarmServiceImpl implements AlarmService {
 	public List<Alarm> getAlarmList(String userId) {
 		return alarmDao.selectAll(userId);
 	}
-	
-	@Override
-	public Alarm readAlarm(int alarmId) {
-		return alarmDao.selectOne(alarmId);
-	}
-
 
 	@Transactional
 	@Override
