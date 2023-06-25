@@ -3,8 +3,10 @@ package com.yangkids.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,6 +21,7 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 @RequestMapping("/api-commentLike")
 @Api(tags = "CommentLike 컨트롤러")
+@CrossOrigin("*")
 public class CommentLikeRestController {
 
 	@Autowired
@@ -27,9 +30,16 @@ public class CommentLikeRestController {
 	@Autowired
 	private AlarmService alarmService;
 
+	@ApiOperation(value = "좋아요 확인")
+	@PostMapping("/like")
+	public ResponseEntity<Integer> like(@RequestBody CommentLike commentLike) {
+		int likeCnt = commentLikeService.countLike(commentLike);
+		return new ResponseEntity<Integer>(likeCnt, HttpStatus.OK);
+	}
+
 	@ApiOperation(value = "좋아요 추가")
 	@PostMapping("/likeup")
-	public ResponseEntity<?> likeup(CommentLike commentLike) {
+	public ResponseEntity<?> likeup(@RequestBody CommentLike commentLike) {
 		try {
 			// 현재 userId와 commentId가 일치하는 경우, 좋아요가 되어있지 않으면 insert해주자
 			int likeCnt = commentLikeService.countLike(commentLike);
@@ -53,7 +63,7 @@ public class CommentLikeRestController {
 
 	@ApiOperation(value = "좋아요 취소")
 	@DeleteMapping("/likeDown")
-	public ResponseEntity<?> likeDown(CommentLike commentLike) {
+	public ResponseEntity<?> likeDown(@RequestBody CommentLike commentLike) {
 		try {
 			// 현재 userId와 commentId가 일치하는 경우 좋아요가 되어있으면 delete해주자
 			int likeCnt = commentLikeService.countLike(commentLike);

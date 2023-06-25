@@ -6,8 +6,8 @@
 
 	<!-- 댓글 목록 조회 -->
 	<select id="selectAll" parameterType="int" resultType="Comment">
-		SELECT
-		Comment.*, User.name as writerName, User.img as writerImg
+		SELECT *, User.name as writerName, User.img as writerImg, 
+		(SELECT count(*) FROM Recomment WHERE Comment.commentId = Recomment.commentId) as recommentCnt
 		FROM Comment JOIN User
 		ON Comment.writerId = User.id
 		WHERE articleId=#{articleId} AND

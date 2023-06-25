@@ -6,7 +6,11 @@
 
 	<!-- 대댓글 목록 조회 -->
 	<select id="selectAll" parameterType="int" resultType="Recomment">
-		SELECT * FROM Recomment WHERE commentId=${commentId} AND deletedAt IS NULL;
+		SELECT *, User.name as writerName, User.img as writerImg
+		FROM Recomment JOIN User
+		ON Recomment.writerId = User.id
+		WHERE commentId=#{commentId} AND
+		deletedAt IS NULL;
 	</select>
 
 	<!-- 대댓글 등록 -->

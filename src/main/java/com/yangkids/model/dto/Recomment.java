@@ -9,13 +9,18 @@ public class Recomment {
 	private int isModified;
 	private int isAnonymous;
 	private String deletedAt;
+	private String writerName;
+	private String writerImg;
+
 
 	public Recomment() {
 		super();
 	}
 
 	public Recomment(int recommentId, int commentId, String content, String writerId, String regDate, int isModified,
-			int isAnonymous, String deletedAt) {
+			int isAnonymous, String deletedAt, 	String writerName,
+	String writerImg
+) {
 		super();
 		this.recommentId = recommentId;
 		this.commentId = commentId;
@@ -25,6 +30,8 @@ public class Recomment {
 		this.isModified = isModified;
 		this.isAnonymous = isAnonymous;
 		this.deletedAt = deletedAt;
+		this.writerName = writerName;
+		this.writerImg = writerImg;
 	}
 
 	public int getRecommentId() {
@@ -90,12 +97,29 @@ public class Recomment {
 	public void setDeletedAt(String deletedAt) {
 		this.deletedAt = deletedAt;
 	}
+	public String getWriterName() {
+		return writerName;
+	}
+
+	public void setWriterName(String writerName) {
+		this.writerName = writerName;
+	}
+
+	public String getWriterImg() {
+		return writerImg;
+	}
+
+	public void setWriterImg(String writerImg) {
+		this.writerImg = writerImg;
+	}
 
 	@Override
 	public String toString() {
 		return "Recomment [recommentId=" + recommentId + ", commentId=" + commentId + ", content=" + content
 				+ ", writerId=" + writerId + ", regDate=" + regDate + ", isModified=" + isModified + ", isAnonymous="
-				+ isAnonymous + ", deletedAt=" + deletedAt + "]";
+				+ isAnonymous + ", deletedAt=" + deletedAt + ", writerName=" + writerName + ", writerImg=" + writerImg
+				+ "]";
 	}
+	
 
 }

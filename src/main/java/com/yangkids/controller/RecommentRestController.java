@@ -50,7 +50,7 @@ public class RecommentRestController {
 
 	@ApiOperation(value = "대댓글 등록")
 	@PostMapping("/write")
-	public ResponseEntity<?> write(Recomment recomment) {
+	public ResponseEntity<?> write(@RequestBody Recomment recomment) {
 		try {
 			int result = recommentService.writeRecomment(recomment);
 
