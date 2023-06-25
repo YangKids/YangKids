@@ -8,6 +8,7 @@ public class Comment {
 	String regDate;
 	int isModified;
 	int likeCnt;
+	int recommentCnt;
 	int isAnonymous;
 	String deletedAt;
 	String writerName;
@@ -18,7 +19,7 @@ public class Comment {
 	}
 
 	public Comment(int commentId, int articleId, String content, String writerId, String regDate, int isModified,
-			int likeCnt, int isAnonymous, String deletedAt, String writerName, String writerImg) {
+			int likeCnt, int recommentCnt, int isAnonymous, String deletedAt, String writerName, String writerImg) {
 		super();
 		this.commentId = commentId;
 		this.articleId = articleId;
@@ -27,6 +28,7 @@ public class Comment {
 		this.regDate = regDate;
 		this.isModified = isModified;
 		this.likeCnt = likeCnt;
+		this.recommentCnt = recommentCnt;
 		this.isAnonymous = isAnonymous;
 		this.deletedAt = deletedAt;
 		this.writerName = writerName;
@@ -89,6 +91,14 @@ public class Comment {
 		this.likeCnt = likeCnt;
 	}
 
+	public int getRecommentCnt() {
+		return recommentCnt;
+	}
+
+	public void setRecommentCnt(int recommentCnt) {
+		this.recommentCnt = recommentCnt;
+	}
+	
 	public int getIsAnonymous() {
 		return isAnonymous;
 	}
@@ -125,9 +135,10 @@ public class Comment {
 	public String toString() {
 		return "Comment [commentId=" + commentId + ", articleId=" + articleId + ", content=" + content + ", writerId="
 				+ writerId + ", regDate=" + regDate + ", isModified=" + isModified + ", likeCnt=" + likeCnt
-				+ ", isAnonymous=" + isAnonymous + ", deletedAt=" + deletedAt + ", writerName=" + writerName
-				+ ", writerImg=" + writerImg + "]";
+				+ ", recommentCnt=" + recommentCnt + ", isAnonymous=" + isAnonymous + ", deletedAt=" + deletedAt
+				+ ", writerName=" + writerName + ", writerImg=" + writerImg + "]";
 	}
 
+	
 	
 }
