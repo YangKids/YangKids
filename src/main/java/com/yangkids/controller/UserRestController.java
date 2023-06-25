@@ -7,7 +7,6 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,7 +27,7 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 @RequestMapping("/api-user")
 @Api(tags = "User 컨트롤러")
-@CrossOrigin("*")
+//@CrossOrigin("*")
 public class UserRestController {
 
 	@Autowired
@@ -43,6 +42,11 @@ public class UserRestController {
 	@ApiOperation(value = "회원가입")
 	@PostMapping("/signup")
 	public ResponseEntity<String> signup(User user, @RequestParam("file") MultipartFile file) {
+		String birth = user.getBirth();
+		birth = birth.substring(2, 4) + birth.substring(5, 7) + birth.substring(8, 10);
+		user.setBirth(birth);
+		System.out.println("회원가입");
+		System.out.println(user);
 		String imgPath = s3Service.saveFile(file);
 		user.setImg("https://d3brc3t3x7lzht.cloudfront.net/" + imgPath);
 		int result = userService.signup(user);
@@ -109,6 +113,8 @@ public class UserRestController {
 	@GetMapping("/checkId")
 	@ApiOperation(value = "아이디 중복 확인 - SUCCESS : 사용 가능한 아이디 / FAIL : 중복된 아이디")
 	public ResponseEntity<String> checkId(String id) {
+		System.out.println("아이디 중복 확인");
+		System.out.println(id);
 		try {
 			User user = userService.searchByLoginId(id);
 			if (user == null) { // 중복된 아이디 없음
