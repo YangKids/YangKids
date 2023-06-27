@@ -71,12 +71,17 @@
 	<!-- 검색기능 -->
 	<select id="search" resultType="Article"
 		parameterType="SearchCondition">
-		SELECT * FROM Article WHERE deletedAt IS NULL
-		<if test="key != 'none'">
-			AND ${key} LIKE concat('%', #{word}, '%')
-		</if>
+		SELECT Article.*,User.img AS writerImg, User.name AS writerName FROM
+		Article JOIN User On Article.writerId=User.id WHERE Article.deletedAt IS NULL AND
+		(
+		CASE WHEN #{key}='name' THEN
+		Article.isAnonymous=0 AND Article.writerId = any(SELECT id
+		FROM User WHERE name LIKE concat ('%', #{word}, '%'))
+		ELSE
+		${key} LIKE concat('%', #{word}, '%') 
+		END)
 		<if test="orderBy == 'none'">
-			ORDER BY regDate DESC
+			ORDER BY Article.regDate DESC
 		</if>
 		<if test="orderBy != 'none'">
 			ORDER BY ${orderBy} ${orderByDir}
