@@ -10,8 +10,7 @@
 		(SELECT count(*) FROM Recomment WHERE Comment.commentId = Recomment.commentId) as recommentCnt
 		FROM Comment JOIN User
 		ON Comment.writerId = User.id
-		WHERE articleId=#{articleId} AND
-		deletedAt IS NULL;
+		WHERE articleId=#{articleId};
 	</select>
 
 	<!-- 댓글 등록 -->
