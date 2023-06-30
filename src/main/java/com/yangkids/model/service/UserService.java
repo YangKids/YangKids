@@ -25,4 +25,7 @@ public interface UserService {
 	
 	// 회원정보 수정
 	public int updateUserInfo(User user);
+
+	// 학번 중복 확인
+	public User searchByStudentId(String studentId);
 }
