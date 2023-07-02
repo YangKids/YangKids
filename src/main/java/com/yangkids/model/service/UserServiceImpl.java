@@ -97,4 +97,9 @@ public class UserServiceImpl implements UserService {
 
 		return userDao.updateUser(user);
 	}
+
+	@Override
+	public User searchByStudentId(String studentId) {
+		return userDao.selectByStudentId(studentId);
+	}
 }

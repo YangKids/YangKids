@@ -3,6 +3,7 @@ package com.yangkids.model.service;
 import java.util.Random;
 
 import javax.mail.Message.RecipientType;
+import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
@@ -156,4 +157,38 @@ public class EmailServiceImpl implements EmailService {
 		}
 		return sb.toString();
 	}
+
+	@Override
+	public void sendStudentId(String to, String id) throws Exception {		
+		// 이메일으로 보낼 메세지 준비
+		String msgg = "";
+		msgg += "<div style='margin:100px;'>";
+		msgg += "<h1> 안녕하세요👋 YangKids입니다. </h1>";
+		msgg += "<br>";
+		msgg += "<p>회원님이 요청하신 로그인 아이디를 알려드립니다.<p>";
+		msgg += "<br>";
+		msgg += "<p>아래 아이디를 이용해 로그인해주세요.<p>";
+		msgg += "<br>";
+		msgg += "<p>감사합니다💕<p>";
+		msgg += "<br>";
+		msgg += "<div align='center' style='border:1px solid black; font-family:verdana';>";
+		msgg += "<h3 style='color:#6464FF;'>'YangKids' 로그인 ID입니다.</h3>";
+		msgg += "<div style='font-size:130%'>";
+		msgg += "로그인 ID : <strong>";
+		msgg += id + "</strong><div><br/> ";
+		msgg += "</div>";
+
+		// 이메일 발신될 데이터 적재
+		MimeMessage message = javaMailSender.createMimeMessage();
+
+		message.addRecipients(RecipientType.TO, to); // 보내는 대상
+		message.setSubject("'YangKids' 아이디 찾기📧"); // 제목
+		message.setText(msgg, "utf-8", "html"); // 내용
+		message.setFrom(new InternetAddress("ssafy9yangkids@gmail.com", "YangKids"));// 보내는 사람
+
+		// 이메일 발신
+		javaMailSender.send(message);		
+	}
+
+
 }

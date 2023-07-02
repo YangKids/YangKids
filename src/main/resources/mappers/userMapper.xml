@@ -61,4 +61,12 @@
 		campus = #{campus}, birth = #{birth}, isAdmin = #{isAdmin}, studentId = #{studentId}
 		WHERE numId = #{numId};
 	</update>
+	
+	<!-- 아이디 찾기 -->
+	<select id="selectByStudentId" parameterType="String"
+		resultType="User">
+		SELECT *
+		FROM `User`
+		WHERE studentId = #{studentId}
+	</select>
 </mapper>
