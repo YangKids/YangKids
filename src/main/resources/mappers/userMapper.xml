@@ -80,4 +80,12 @@
 		</if>
 		WHERE numId = #{numId}
 	</update>
+	
+	<!-- 아이디 찾기 -->
+	<select id="selectByStudentId" parameterType="String"
+		resultType="User">
+		SELECT *
+		FROM `User`
+		WHERE studentId = #{studentId}
+	</select>
 </mapper>

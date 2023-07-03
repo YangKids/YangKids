@@ -31,4 +31,7 @@ public interface UserDao {
 
 	// 회원정보 수정
 	public int updateUser(User user);
+
+	// 학번으로 아이디 찾기
+	public User selectByStudentId(String studentId);
 }
