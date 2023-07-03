@@ -26,6 +26,9 @@ public interface UserDao {
 	// 본인 확인
 	public User selectUser(@Param("numId") int numId, String password);
 
+	// 학번 중복 확인
+	public User selectByStudentId(String studentId);
+
 	// 회원정보 수정
 	public int updateUser(User user);
 }
