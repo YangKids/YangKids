@@ -34,8 +34,8 @@
 		as commentCnt
 		FROM Article join User
 		ON Article.writerId = User.id
-		WHERE ArticleId=#{articleId} AND deletedAt IS
-		NULL ORDER BY regDate DESC;
+		WHERE ArticleId=#{articleId}
+		ORDER BY regDate DESC;
 	</select>
 
 	<!-- 게시글 등록 -->
