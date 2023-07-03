@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,7 +28,7 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 @RequestMapping("/api-user")
 @Api(tags = "User 컨트롤러")
-//@CrossOrigin("*")
+@CrossOrigin("*")
 public class UserRestController {
 
 	@Autowired
@@ -49,6 +50,24 @@ public class UserRestController {
 		System.out.println(user);
 		String imgPath = s3Service.saveFile(file);
 		user.setImg("https://d3brc3t3x7lzht.cloudfront.net/" + imgPath);
+		int result = userService.signup(user);
+		// 회원가입 성공한 경우
+		if (result > 0) {
+			return new ResponseEntity<String>("SUCCESS", HttpStatus.CREATED);
+		}
+		// 회원가입 실패한 경우
+		return new ResponseEntity<String>("FAIL", HttpStatus.BAD_REQUEST);
+	}
+	
+	@ApiOperation(value = "회원가입")
+	@PostMapping("/signup/noimage")
+	public ResponseEntity<String> signup(User user) {
+		String birth = user.getBirth();
+		birth = birth.substring(2, 4) + birth.substring(5, 7) + birth.substring(8, 10);
+		user.setBirth(birth);
+		System.out.println("회원가입");
+		System.out.println(user);
+		user.setImg("https://d3brc3t3x7lzht.cloudfront.net/SSAFY.png_1687711415257");
 		int result = userService.signup(user);
 		// 회원가입 성공한 경우
 		if (result > 0) {
@@ -126,6 +145,23 @@ public class UserRestController {
 			return exceptionHandling(e);
 		}
 	}
+	
+	@GetMapping("/checkStudentId")
+	@ApiOperation(value = "학번 중복 확인 - SUCCESS : 중복되지 않은 학번 / FAIL : 중복된 학번")
+	public ResponseEntity<String> checkStudentId(String studentId) {
+		System.out.println("학번 중복 확인");
+		System.out.println(studentId);
+		try {
+			User user = userService.searchByStudentId(studentId);
+			if (user == null) { // 중복된 아이디 없음
+				return new ResponseEntity<String>("SUCCESS", HttpStatus.OK); // 아이디 사용 가능
+			} else {
+				return new ResponseEntity<String>("FAIL", HttpStatus.IM_USED);
+			}
+		} catch (Exception e) {
+			return exceptionHandling(e);
+		}
+	}
 
 	@GetMapping("/identifyUser")
 	@ApiOperation(value = "본인 확인 - 로그인 유저의 비밀번호와 입력받은 비밀번호가 일치하는지 확인")
@@ -145,8 +181,24 @@ public class UserRestController {
 	@PutMapping("/updateUserInfo")
 	@ApiOperation(value = "회원정보 수정")
 	public ResponseEntity<String> updateUserInfo(User user, @RequestParam("file") MultipartFile file) {
+		System.out.println("회원정보 수정");
 		String imgPath = s3Service.saveFile(file);
 		user.setImg("https://d3brc3t3x7lzht.cloudfront.net/" + imgPath);
+		System.out.println(user);
+		int result = userService.updateUserInfo(user);
+		// 정보수정 성공한 경우
+		if (result > 0) {
+			return new ResponseEntity<String>("https://d3brc3t3x7lzht.cloudfront.net/" + imgPath, HttpStatus.OK);
+		}
+		// 정보수정 실패한 경우
+		return new ResponseEntity<String>("FAIL", HttpStatus.BAD_REQUEST);
+	}
+	
+	@PutMapping("/updateUserInfo/noimage")
+	@ApiOperation(value = "회원정보 수정(프로필 이미지는 수정x)")
+	public ResponseEntity<String> updateUserInfo(User user) {
+		System.out.println("회원정보 수정");
+		System.out.println(user);
 		int result = userService.updateUserInfo(user);
 		// 정보수정 성공한 경우
 		if (result > 0) {

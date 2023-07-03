@@ -5,15 +5,22 @@
 <mapper namespace="com.yangkids.model.dao.UserDao">
 	<!-- 회원가입 -->
 	<insert id="insertUser" parameterType="User">
-		INSERT INTO `User`(id, name, phoneNumber, email, generation, password,
-		age, teacher, passwordHint, passwordAnswer, img,
-		gender, isEmployed, address, detailAddress, campus,
+		INSERT INTO `User`(id,
+		name, phoneNumber, email, generation, password,
+		age, teacher,
+		passwordHint, passwordAnswer, img,
+		gender, isEmployed, address,
+		detailAddress, campus,
 		birth, isAdmin, studentId)
 		VALUES
-		(#{id}, #{name}, #{phoneNumber}, #{email}, #{generation}, #{password},
-		#{age}, #{teacher}, #{passwordHint}, #{passwordAnswer}, #{img},
-		#{gender}, #{isEmployed}, #{address}, #{detailAddress}, #{campus},
-		#{birth}, #{isAdmin}, #{studentId})
+		(#{id}, #{name},
+		#{phoneNumber}, #{email}, #{generation}, #{password},
+		#{age},
+		#{teacher}, #{passwordHint}, #{passwordAnswer}, #{img},
+		#{gender},
+		#{isEmployed}, #{address}, #{detailAddress}, #{campus},
+		#{birth},
+		#{isAdmin}, #{studentId})
 	</insert>
 
 	<!-- 로그인 -->
@@ -44,22 +51,34 @@
 		FROM `User`
 		WHERE id = #{id}
 	</select>
-	
+
+	<!-- 학번 중복 확인 -->
+	<select id="selectByStudentId" parameterType="String"
+		resultType="User">
+		SELECT *
+		FROM `User`
+		WHERE studentId = #{studentId}
+	</select>
+
 	<!-- 본인 확인 -->
 	<select id="selectUser" parameterType="map" resultType="User">
 		SELECT *
 		FROM `User`
 		WHERE numId =#{numId} AND password = #{password}
 	</select>
-	
-	<!-- 회원정보-->
+
+	<!-- 회원정보 수정 -->
 	<update id="updateUser" parameterType="User">
 		UPDATE `User`
-		SET id = #{id}, name = #{name}, password = #{phoneNumber}, email = #{email}, generation = #{generation},
-		password = #{password}, age = #{age}, teacher = #{teacher}, passwordHint = #{passwordHint}, passwordAnswer = #{passwordAnswer},
-		img = #{img}, gender = #{gender}, isEmployed = #{isEmployed}, address = #{address}, detailAddress = #{detailAddress},
-		campus = #{campus}, birth = #{birth}, isAdmin = #{isAdmin}, studentId = #{studentId}
-		WHERE numId = #{numId};
+		SET phoneNumber = #{phoneNumber}, email = #{email},
+		isEmployed = #{isEmployed}
+		<if test="password != null">
+			, password = #{password}
+		</if>
+		<if test="img != null">
+			, img = #{img}
+		</if>
+		WHERE numId = #{numId}
 	</update>
 	
 	<!-- 아이디 찾기 -->

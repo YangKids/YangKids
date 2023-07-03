@@ -88,9 +88,11 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public int updateUserInfo(User user) {
 		try {
-			// 비밀번호 암호화
-			String encPw = sha.doEncrypt(user.getPassword());
-			user.setPassword(encPw); // 암호화된 비밀번호로 변경
+			// 비밀번호 암호화 (비밀번호 있을 때만. 비밀번호 수정하지 않았으면 없을 수도!)
+			if (user.getPassword() != null) {
+				String encPw = sha.doEncrypt(user.getPassword());
+				user.setPassword(encPw); // 암호화된 비밀번호로 변경
+			}
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
 		}
