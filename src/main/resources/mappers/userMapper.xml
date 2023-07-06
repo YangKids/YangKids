@@ -52,7 +52,7 @@
 		WHERE id = #{id}
 	</select>
 
-	<!-- 학번 중복 확인 -->
+	<!-- 학번 중복 확인, 아이디 찾기  -->
 	<select id="selectByStudentId" parameterType="String"
 		resultType="User">
 		SELECT *
@@ -80,12 +80,4 @@
 		</if>
 		WHERE numId = #{numId}
 	</update>
-	
-	<!-- 아이디 찾기 -->
-	<select id="selectByStudentId" parameterType="String"
-		resultType="User">
-		SELECT *
-		FROM `User`
-		WHERE studentId = #{studentId}
-	</select>
 </mapper>
