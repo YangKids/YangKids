@@ -9,8 +9,7 @@
 		SELECT *, User.name as writerName, User.img as writerImg
 		FROM Recomment JOIN User
 		ON Recomment.writerId = User.id
-		WHERE commentId=#{commentId} AND
-		deletedAt IS NULL;
+		WHERE commentId=#{commentId};
 	</select>
 
 	<!-- 대댓글 등록 -->
