@@ -28,7 +28,7 @@ import io.swagger.annotations.ApiOperation;
 @Api(tags = "Alarm 컨트롤러")
 @CrossOrigin("*")
 public class AlarmRestController {
-
+	//git
 	@Autowired
 	private AlarmService alarmService;
 
