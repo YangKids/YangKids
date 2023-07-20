@@ -4,7 +4,7 @@ name: CI-workflow
 # Action의 Trigger 설정
 on:
   pull_request:
-    branches: ["master"]
+    branches: ["main"]
 
   # 언제든지 수동으로 실행하게 해주는 옵션
   workflow_dispatch:
